@@ -1,0 +1,15 @@
+Object subclass: Main
+    category: examples
+    vars: x y
+    [
+        init [
+            y = examples/IntTests new; x = examples/SavingsAccount new;
+            y = 20;
+            x deposit: y;
+            x printbal;
+            x applyInterest;
+            x printbal;
+            x withdrawal: 20;
+            x printbal;
+        ]
+    ]

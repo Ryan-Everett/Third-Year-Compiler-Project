@@ -1,0 +1,21 @@
+Object subclass: IntTests
+    category: examples
+    vars: v
+    [
+        init [
+            v = 7;
+            self println;
+            v = v * 3 - -7 * 2;
+            v println;
+            [self add1: 2] println
+        ]
+
+        println [
+            v println
+        ]
+
+        add1: x [
+            x = x + 1;
+            ^x
+        ]
+    ]

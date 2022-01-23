@@ -1,0 +1,23 @@
+Object subclass: RtAccount
+    category: examples
+    vars: id balance
+    [
+        init [
+            balance = 0;
+        ]
+        id: accId [
+            id = accId;
+        ]
+        deposit: amount [
+            balance = balance + amount;
+        ]
+        withdrawal: amount [
+            balance = balance - amount;
+        ]
+        printbal [
+            balance println;
+        ]
+        balance [
+            ^balance
+        ]
+    ]

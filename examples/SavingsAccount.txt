@@ -1,0 +1,14 @@
+examples/RtAccount subclass: SavingsAccount
+    category: examples
+    vars: interestRate
+    [
+        init [
+            interestRate = 1;
+        ]
+        interestRate: x [
+            interestRate = x;
+        ]
+        applyInterest [
+            self deposit: [[self balance] * interestRate]
+        ]
+    ]
