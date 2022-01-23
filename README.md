@@ -1,4 +1,4 @@
-# ThirdYearProject
+# Third Year Project
 Third year compiler project (Still in progress)
 
 Compiler for a smalltalk style language to the JVM. Based on the Oxford Oberon-2 compiler
