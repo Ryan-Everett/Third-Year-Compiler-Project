@@ -1,10 +1,13 @@
 DEPENDANCIES = "dependancies/*"
 RUNFLAGS = -cp classes:$(DEPENDANCIES)
 
-all: build compile runMain
+all: downloadKrak build compile runMain
+
+downloadKrak:
+		git clone https://github.com/Storyyeller/Krakatau
 
 build:
-		git clone https://github.com/Storyyeller/Krakatau
+		
 		$(MAKE) -C compiler/lib all
 		$(MAKE) -C compiler all
 
