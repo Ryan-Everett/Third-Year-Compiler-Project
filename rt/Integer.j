@@ -51,7 +51,7 @@ L11:
     .end code 
 .end method 
 
-.method public 'add:' : (Lrt/Integer;)Lrt/Integer; 
+.method public 'add$' : (Lrt/Integer;)Lrt/Integer; 
     .code stack 4 locals 2 
 L0:     new rt/Integer 
 L3:     dup 
@@ -85,7 +85,7 @@ L13:
     .end code 
 .end method 
 
-.method public 'minus:' : (Lrt/Integer;)Lrt/Integer; 
+.method public 'minus$' : (Lrt/Integer;)Lrt/Integer; 
     .code stack 4 locals 2 
 L0:     new rt/Integer 
 L3:     dup 
@@ -103,7 +103,7 @@ L17:
     .end code 
 .end method 
 
-.method public 'mult:' : (Lrt/Integer;)Lrt/Integer; 
+.method public 'mult$' : (Lrt/Integer;)Lrt/Integer; 
     .code stack 4 locals 2 
 L0:     new rt/Integer 
 L3:     dup 
@@ -121,7 +121,7 @@ L17:
     .end code 
 .end method 
 
-.method public 'div:' : (Lrt/Integer;)Lrt/Integer; 
+.method public 'div$' : (Lrt/Integer;)Lrt/Integer; 
     .code stack 4 locals 2 
 L0:     new rt/Integer 
 L3:     dup 
@@ -139,7 +139,7 @@ L17:
     .end code 
 .end method 
 
-.method public 'mod:' : (Lrt/Integer;)Lrt/Integer; 
+.method public 'mod$' : (Lrt/Integer;)Lrt/Integer; 
     .code stack 4 locals 2 
 L0:     new rt/Integer 
 L3:     dup 

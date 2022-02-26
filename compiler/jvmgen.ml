@@ -8,8 +8,7 @@ open Print
 let rec gen_expr c e =
   match e with
       MessageSend s -> 
-        SEQ[gen_expr c s.s_target; DUP; ASTORE 8; LDC s.s_full_name; PGET; ALOAD 8;
-            gen_params c s.s_params; PCALL s.s_arg_count]
+        SEQ[gen_expr c s.s_target; gen_params c s.s_params; PCALL (s.s_full_name, s.s_arg_count)]
     | InitSend s -> 
         SEQ [LDCLASS ("rt/"^s); GETMETA; DYNINIT]
     | Variable x -> 
@@ -49,8 +48,7 @@ and gen_stmt c s =
           )
       )
     | MessageSendVoid s -> 
-        SEQ[gen_expr c s.s_target; DUP; ASTORE 8; LDC s.s_full_name; PGET; ALOAD 8;
-            gen_params c s.s_params; PCALL s.s_arg_count; POP]
+        SEQ[gen_expr c s.s_target; gen_params c s.s_params; PCALL (s.s_full_name, s.s_arg_count); POP]
     | InitSendVoid s -> 
         SEQ [LDCLASS ("rt/"^s); GETMETA; DYNINIT; POP]
     | Return e -> 

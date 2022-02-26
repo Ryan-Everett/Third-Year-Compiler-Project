@@ -11,8 +11,8 @@ let make_hash n ps =
 (* |kwtable| -- a little table to recognize keywords *)
 let kwtable = 
     make_hash 64
-        [ ("subclass:", SUBCLASS); ("category:", CATEGORY);
-          ("vars:", VARNAMES) ; ("true", TRUE);
+        [ ("subclass$", SUBCLASS); ("category$", CATEGORY);
+          ("vars$", VARNAMES) ; ("true", TRUE);
           ("false", FALSE) ; ("init", INIT) ; ("new", NEW)]
 
 (* |idtable| -- table of all identifiers seen so far *)
@@ -25,11 +25,13 @@ let lookup s =
       Hashtbl.replace idtable s ();
       IDENT s
 
-let messagelookup s = 
-  try Hashtbl.find kwtable s with 
-    Not_found -> 
-      Hashtbl.replace idtable s ();
-      MESSAGE s
+(* |message_lookup| -- convert string to message *)
+let messagelookup s =
+  let m = (String.sub s 0 ((String.length s) - 1)) ^ "$" in (*Replace : with $ *)
+    try Hashtbl.find kwtable m with 
+      Not_found -> 
+        Hashtbl.replace idtable m ();
+        MESSAGE m
 
 
 (* |get_vars| -- get list of identifiers in the program *)

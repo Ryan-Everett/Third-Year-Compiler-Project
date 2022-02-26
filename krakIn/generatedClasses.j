@@ -15,75 +15,35 @@ bipush 7
 aaload
 putfield Field "rt/examples/IntTests" "v" Lrt/Object;
 aload 0
-dup
-astore 8
-ldc "println"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:println' (Ljava/lang/Object;)Lrt/Object;
 pop
 aload 0
 aload 0
 getfield Field "rt/examples/IntTests" "v" Lrt/Object;
-dup
-astore 8
-ldc "mult:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 getstatic Field rt/Integer smallInts [Lrt/Integer;
 bipush 3
 aaload
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
-dup
-astore 8
-ldc "minus:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:mult$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 getstatic Field rt/Integer smallInts [Lrt/Integer;
 bipush 7
 aaload
-dup
-astore 8
-ldc "minus"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
-dup
-astore 8
-ldc "mult:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:minus' (Ljava/lang/Object;)Lrt/Object;
 getstatic Field rt/Integer smallInts [Lrt/Integer;
 bipush 2
 aaload
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:mult$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:minus$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 putfield Field "rt/examples/IntTests" "v" Lrt/Object;
 aload 0
 getfield Field "rt/examples/IntTests" "v" Lrt/Object;
-dup
-astore 8
-ldc "println"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:println' (Ljava/lang/Object;)Lrt/Object;
 pop
 aload 0
-dup
-astore 8
-ldc "add1:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 getstatic Field rt/Integer smallInts [Lrt/Integer;
 bipush 2
 aaload
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
-dup
-astore 8
-ldc "println"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:add1$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:println' (Ljava/lang/Object;)Lrt/Object;
 pop
 return
 .end method
@@ -92,29 +52,19 @@ return
 .limit locals 10
 aload 0
 getfield Field "rt/examples/IntTests" "v" Lrt/Object;
-dup
-astore 8
-ldc "println"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:println' (Ljava/lang/Object;)Lrt/Object;
 pop
 aload 0
 areturn
 .end method
-.method public "add1:" : (Lrt/Object;)Lrt/Object;
+.method public "add1$" : (Lrt/Object;)Lrt/Object;
 .limit stack 10
 .limit locals 10
 aload 1
-dup
-astore 8
-ldc "add:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 getstatic Field rt/Integer smallInts [Lrt/Integer;
 bipush 1
 aaload
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:add$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 astore 1
 aload 1
 areturn
@@ -152,62 +102,32 @@ aaload
 putfield Field "rt/examples/Main" "y" Lrt/Object;
 aload 0
 getfield Field "rt/examples/Main" "x" Lrt/Object;
-dup
-astore 8
-ldc "deposit:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 aload 0
 getfield Field "rt/examples/Main" "y" Lrt/Object;
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:deposit$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 pop
 aload 0
 getfield Field "rt/examples/Main" "x" Lrt/Object;
-dup
-astore 8
-ldc "printbal"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:printbal' (Ljava/lang/Object;)Lrt/Object;
 pop
 aload 0
 getfield Field "rt/examples/Main" "x" Lrt/Object;
-dup
-astore 8
-ldc "applyInterest"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:applyInterest' (Ljava/lang/Object;)Lrt/Object;
 pop
 aload 0
 getfield Field "rt/examples/Main" "x" Lrt/Object;
-dup
-astore 8
-ldc "printbal"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:printbal' (Ljava/lang/Object;)Lrt/Object;
 pop
 aload 0
 getfield Field "rt/examples/Main" "x" Lrt/Object;
-dup
-astore 8
-ldc "withdrawal:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 getstatic Field rt/Integer smallInts [Lrt/Integer;
 bipush 20
 aaload
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:withdrawal$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 pop
 aload 0
 getfield Field "rt/examples/Main" "x" Lrt/Object;
-dup
-astore 8
-ldc "printbal"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:printbal' (Ljava/lang/Object;)Lrt/Object;
 pop
 
 return
@@ -233,7 +153,7 @@ putfield Field "rt/examples/RtAccount" "balance" Lrt/Object;
 
 return
 .end method
-.method public "id:" : (Lrt/Object;)Lrt/Object;
+.method public "id$" : (Lrt/Object;)Lrt/Object;
 .limit stack 10
 .limit locals 10
 aload 0
@@ -243,37 +163,27 @@ putfield Field "rt/examples/RtAccount" "id" Lrt/Object;
 aload 0
 areturn
 .end method
-.method public "deposit:" : (Lrt/Object;)Lrt/Object;
+.method public "deposit$" : (Lrt/Object;)Lrt/Object;
 .limit stack 10
 .limit locals 10
 aload 0
 aload 0
 getfield Field "rt/examples/RtAccount" "balance" Lrt/Object;
-dup
-astore 8
-ldc "add:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 aload 1
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:add$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 putfield Field "rt/examples/RtAccount" "balance" Lrt/Object;
 
 aload 0
 areturn
 .end method
-.method public "withdrawal:" : (Lrt/Object;)Lrt/Object;
+.method public "withdrawal$" : (Lrt/Object;)Lrt/Object;
 .limit stack 10
 .limit locals 10
 aload 0
 aload 0
 getfield Field "rt/examples/RtAccount" "balance" Lrt/Object;
-dup
-astore 8
-ldc "minus:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 aload 1
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:minus$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 putfield Field "rt/examples/RtAccount" "balance" Lrt/Object;
 
 aload 0
@@ -284,12 +194,7 @@ areturn
 .limit locals 10
 aload 0
 getfield Field "rt/examples/RtAccount" "balance" Lrt/Object;
-dup
-astore 8
-ldc "println"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:println' (Ljava/lang/Object;)Lrt/Object;
 pop
 
 aload 0
@@ -325,7 +230,7 @@ putfield Field "rt/examples/SavingsAccount" "interestRate" Lrt/Object;
 
 return
 .end method
-.method public "interestRate:" : (Lrt/Object;)Lrt/Object;
+.method public "interestRate$" : (Lrt/Object;)Lrt/Object;
 .limit stack 10
 .limit locals 10
 aload 0
@@ -339,27 +244,12 @@ areturn
 .limit stack 10
 .limit locals 10
 aload 0
-dup
-astore 8
-ldc "deposit:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
 aload 0
-dup
-astore 8
-ldc "balance"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;)Lrt/Object;
-dup
-astore 8
-ldc "mult:"
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;
-aload 8
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:balance' (Ljava/lang/Object;)Lrt/Object;
 aload 0
 getfield Field "rt/examples/SavingsAccount" "interestRate" Lrt/Object;
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
-invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:mult$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
+invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:deposit$' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;
 pop
 aload 0
 areturn

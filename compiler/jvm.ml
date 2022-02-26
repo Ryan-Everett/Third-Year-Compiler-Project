@@ -25,9 +25,9 @@ type code =
   | LDCLASS of string                       (*Load class onto stack (className) *)
   | GETMETA                                 (*Get meta class of class on stack *)
   | DYNINIT                                 (*Create object with invoke dynamic *)
-  (*| DYNINITINT                              (*Create Integer with invoke dynamic *)*)
-  | PGET                                    (*Get method with [Target object, method name] on stack *)
-  | PCALL of int                            (*Call method on object [method, target object, args] on stack (numArgs)*)
+(*| DYNINITINT                              (*Create Integer with invoke dynamic *)*)
+(*| PGET of string                          (*Get method with [Target object, method name] on stack *)*)
+  | PCALL of string * int                   (*Call method on object [target object, args] on stack (methodID, numArgs)*)
   | GETFIELD of string * string             (*Get instance variable (class, varName) *)
   | PUTFIELD of string * string             (*Write value on stack head to instance variable (class, varName) *)
   | POP                                     (*Pop head of stack *)
@@ -85,9 +85,9 @@ let rec fInst =
         | LDCLASS c ->                  fMeta "ldc Class \"$\"" [fStr c]
         | GETMETA ->                    fStr "invokestatic [getstatcls]"
         | DYNINIT ->                    fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:new' (Ljava/lang/Object;)Lrt/Object;" 
-        (*| DYNINITINT ->                 fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:new' (Ljava/lang/Object;I)Lrt/Object;" [dynmeth]*)
-        | PGET ->                       fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;" 
-        | PCALL x ->                    fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;Ljava/lang/Object;$)Lrt/Object;" [ fStr(repeatStr x "Lrt/Object;")]
+      (*| DYNINITINT ->                 fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:new' (Ljava/lang/Object;I)Lrt/Object;" [dynmeth]*)
+      (*| PGET n->                      fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod:$' (Ljava/lang/Object;)Ljava/lang/Object;" [fStr n] *)
+        | PCALL (n, x) ->               fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:$' (Ljava/lang/Object;$)Lrt/Object;" [ fStr n; fStr(repeatStr x "Lrt/Object;")]
         | GETFIELD (c, n) ->            fMeta "getfield Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
         | PUTFIELD (c, n) ->            fMeta "putfield Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
         | POP ->                        fStr "pop"

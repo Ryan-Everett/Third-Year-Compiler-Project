@@ -16,7 +16,7 @@ open Dict
 %%
 
 file :
-      class_decls                         {ClassDecls ($1)}
+      class_decls                         { ClassDecls ($1)}
 
 class_decls :
       class_decl                          { [$1] }
@@ -79,13 +79,13 @@ stmt :
 
 expr :
       expr2                               { $1 }
-    | expr PLUS expr2                     { MessageSend (makeMessageSend $1 [makeParam "add:" (Some($3))]) }
-    | expr MINUS expr2                    { MessageSend (makeMessageSend $1 [makeParam "minus:" (Some($3))]) }
+    | expr PLUS expr2                     { MessageSend (makeMessageSend $1 [makeParam "add$" (Some($3))]) }
+    | expr MINUS expr2                    { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
 
 expr2 : 
       factor                              { $1 }
-    | expr2 TIMES factor                  { MessageSend (makeMessageSend $1 [makeParam "mult:" (Some($3))]) }
-    | expr2 DIVIDE factor                 { MessageSend (makeMessageSend $1 [makeParam "div:" (Some($3))]) }
+    | expr2 TIMES factor                  { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
+    | expr2 DIVIDE factor                 { MessageSend (makeMessageSend $1 [makeParam "div$" (Some($3))]) }
     | factor params                       { MessageSend (makeMessageSend $1 $2)}
     | IDENT NEW                           { InitSend ($1)}; 
 
@@ -98,11 +98,8 @@ factor2 :
     | MINUS factor2                       { MessageSend (makeMessageSend $2 [makeParam "minus" None]) }
     | LPAR expr RPAR                      { $2 };
 variable :
-    | name                                {Variable ($1) }
-    | NUMBER                              {Number ($1) };
+    | name                                { Variable ($1) }
+    | NUMBER                              { Number ($1) };
 
 name :  
     IDENT                                 { makeName $1 !Lexer.currLine } ;
-
-
-
