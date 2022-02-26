@@ -14,6 +14,7 @@ build:
 compile:
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
+		javac -cp classes rt/* -d classes
 
 runMain:
 		java $(RUNFLAGS):. rt.examples.ExampleTester
