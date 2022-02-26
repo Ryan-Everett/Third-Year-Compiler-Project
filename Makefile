@@ -12,6 +12,7 @@ build:
 		$(MAKE) -C compiler all
 
 compile:
+		mkdir -p krakIn
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
 		javac -cp classes rt/* -d classes
@@ -23,3 +24,5 @@ clean:
 		$(MAKE) -C compiler/lib clean
 		$(MAKE) -C compiler clean
 		rm -rf classes/*
+		rm -rf krakIn
+		rm -rf Krakatau
