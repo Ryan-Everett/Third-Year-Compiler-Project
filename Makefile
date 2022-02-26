@@ -23,6 +23,6 @@ runMain:
 clean:
 		$(MAKE) -C compiler/lib clean
 		$(MAKE) -C compiler clean
-		rm -rf classes/*
+		rm -rf classes
 		rm -rf krakIn
 		rm -rf Krakatau
