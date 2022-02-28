@@ -3,6 +3,12 @@ RUNFLAGS = -cp classes:$(DEPENDANCIES)
 
 all: downloadKrak build compile runMain
 
+btest: build compile runMain
+ctest: 	
+		$(MAKE) -C compiler/lib clean
+		$(MAKE) -C compiler clean
+		rm -rf classes
+		rm -rf krakIn
 downloadKrak:
 		git clone https://github.com/Storyyeller/Krakatau
 

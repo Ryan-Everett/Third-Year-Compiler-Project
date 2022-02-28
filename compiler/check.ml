@@ -61,6 +61,10 @@ let rec check_expr e env =
   match e with
       Number (x) -> 
         ()
+    | String (x) ->
+        ()
+    | Char (x) ->
+        ()
     | Variable (x) ->
         let d = lookup_def x env in
           if not (has_value d) then

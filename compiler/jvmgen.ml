@@ -2,7 +2,6 @@ open Dict
 open Tree 
 open Jvm 
 open Print
-
 (* Code generation *)
 
 let rec gen_expr c e =
@@ -23,6 +22,10 @@ let rec gen_expr c e =
         (*Small numbers are preallocated*)
         if x < 128 then SEQ[SMALLINTS; BIPUSH x; AALOAD]
         else SEQ[NEW "rt/Integer"; DUP; SIPUSH x; INITINT]
+    | Char x ->
+        SEQ[NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
+    | String x ->
+        SEQ[NEW "rt/String"; DUP; LDC x; INITSTRING]
     | _ -> SEQ[]
 
 and gen_param c p =

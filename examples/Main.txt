@@ -11,5 +11,8 @@ Object subclass: Main
             x printbal;
             x withdrawal: 20;
             x printbal;
+            ["Con" ++ "cat" ++ "ena" ++ "ted"] println;
+            [["abcd" charAt: 2] + 12] println;
+            "Test complete!" println;
         ]
     ]

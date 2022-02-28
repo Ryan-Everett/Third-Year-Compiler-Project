@@ -16,6 +16,8 @@ type code =
   | DUP                                     (*Duplicate top operand of the stack*)
   | INIT of string                          (*Call to create and initialize class (className) *)
   | INITINT                                 (*Initialise rt/Integer*)
+  | INITCHAR                                (*Initialise rt/Char*)
+  | INITSTRING                              (*Initialise rt/String*)
   | SLIMIT of int                           (*Limit stack size to n (CHECK THIS) *)
   | LLIMIT of int                           (*Limit local size to n (CHECK THIS) *)
   | ASTORE of int                           (*Store reference into local variable (location) *)
@@ -76,6 +78,8 @@ let rec fInst =
         | DUP ->                        fStr "dup"
         | INIT n ->                     fMeta "invokespecial Method $ <init> ()V" [fStr n]
         | INITINT ->                    fStr "invokespecial Method rt/Integer <init> (I)V"
+        | INITCHAR ->                   fStr "invokespecial Method rt/Char <init> (C)V"
+        | INITSTRING ->                 fStr "invokespecial Method rt/String <init> (Ljava/lang/String;)V"
         | SLIMIT x ->                   fMeta ".limit stack $" [fNum x]
         | LLIMIT x ->                   fMeta ".limit locals $" [fNum x]
         | ASTORE x ->                   fMeta "astore $" [fNum x]

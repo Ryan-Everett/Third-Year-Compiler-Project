@@ -55,7 +55,9 @@ and stmt =
 
   
 and expr =
-  Number of int             (* Constant (value) *)
+    Number of int             (* Constant (value) *)
+    | Char of char
+    | String of string
     | Variable of name          (* Variable (name) *)
     | MessageSend of messageSend
     | InitSend of ident
@@ -119,6 +121,10 @@ let rec fExpr =
   function
       Number n -> 
         fMeta "Number_$" [fNum n]
+    | Char n ->
+        fMeta "Char_\'$\'" [fChr n]
+    | String n ->
+        fMeta "String_\"$\"" [fStr n]
     | Variable x -> 
         fMeta "Variable_\"$\"" [fName x]
     | MessageSend s ->

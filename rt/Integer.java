@@ -8,7 +8,7 @@ public class Integer extends rt.Object{
         }
     }
 
-    private final int value;
+    final int value;
     public Integer(int x) {
         value = x;
     }

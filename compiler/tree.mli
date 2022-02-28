@@ -54,7 +54,9 @@ and stmt =
 
   
 and expr =
-  Number of int             (* Constant (value) *)
+      Number of int             (* Constant (value) *)
+    | Char of char
+    | String of string
     | Variable of name          (* Variable (name) *)
     | MessageSend of messageSend
     | InitSend of ident

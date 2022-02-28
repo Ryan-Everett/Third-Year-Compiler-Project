@@ -3,10 +3,12 @@ open Tree
 open Dict
 %}
 %token <Dict.ident>     IDENT MESSAGE
-%token <int>             NUMBER
-%token <float>          
+%token <int>            NUMBER
+%token <float>
+%token <char>           CHAR          
+%token <string>         STRING
 %token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE
-%token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK 
+%token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT
 %token                  SEMI ASSIGN LPAR RPAR TRUE FALSE INIT NEW RETURN
                   
 %type <Tree.classDecls>  file
@@ -81,7 +83,7 @@ expr :
       expr2                               { $1 }
     | expr PLUS expr2                     { MessageSend (makeMessageSend $1 [makeParam "add$" (Some($3))]) }
     | expr MINUS expr2                    { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
-
+    | expr CONCAT expr2                   { MessageSend (makeMessageSend $1 [makeParam "concat$" (Some($3))]) }
 expr2 : 
       factor                              { $1 }
     | expr2 TIMES factor                  { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
@@ -100,6 +102,8 @@ factor2 :
 variable :
     | name                                { Variable ($1) }
     | NUMBER                              { Number ($1) };
+    | CHAR                                { Char ($1) }
+    | STRING                              { String ($1) };
 
 name :  
     IDENT                                 { makeName $1 !Lexer.currLine } ;

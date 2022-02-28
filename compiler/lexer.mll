@@ -27,7 +27,7 @@ let lookup s =
 
 (* |message_lookup| -- convert string to message *)
 let messagelookup s =
-  let m = (String.sub s 0 ((String.length s) - 1)) ^ "$" in (*Replace : with $ *)
+  let m = s ^ "$" in
     try Hashtbl.find kwtable m with 
       Not_found -> 
         Hashtbl.replace idtable m ();
@@ -47,18 +47,27 @@ let letter = ['A'-'Z''a'-'z']
 let up_letter = ['A'-'Z']
 let digit = ['0'-'9']
 
+let q = '\''
+let qq = '"'
+let char1 = [^'\'']
+let char2 = [^'"']
 rule token = 
-  parse
-      letter (letter | digit | '_' | '/')* as s
+  parse 
+    | letter (letter | digit | '_' | '/')* as s
                         { lookup s }
-    | letter (letter | digit | '_')*":" as s
+    | (letter (letter | digit | '_')* as s)":"
                         { messagelookup s }
     | digit+ as s
                         { NUMBER (int_of_string s) }
+    | q (char1 as c) q  { CHAR c }
+    | q q q q           { CHAR '\'' }
+    | qq ((char2 | qq qq)* as s) qq
+                        { STRING s }
     | "["               { LPAR }
     | "]"               { RPAR }
     | "="               { EQUAL }
     | "+"               { PLUS }
+    | "++"              { CONCAT }
     | "-"               { MINUS }
     | "*"               { TIMES }
     | "/"               { DIVIDE }
