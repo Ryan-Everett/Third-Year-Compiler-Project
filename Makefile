@@ -21,7 +21,7 @@ compile:
 		mkdir -p krakIn
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
-		javac -cp classes rt/* -d classes
+		javac -cp classes:dependancies/dynalink-0.7.jar rt/* -d classes
 
 runMain:
 		java $(RUNFLAGS):. rt.examples.ExampleTester

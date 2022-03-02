@@ -2,7 +2,11 @@ package rt.examples;
 //import rt.examples.Main;
 public class ExampleTester {
     public static void main(String[] args) {
-        Main m = new Main();
-        System.out.println("Done");
+        try {
+            Main m = new Main();
+            System.out.println("Done");
+        } catch (org.dynalang.dynalink.NoSuchDynamicMethodException e) {
+            System.out.println("ERROR: " + e);
+        }
     }
 }
