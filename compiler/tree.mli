@@ -19,10 +19,10 @@ and name =
    x_line: int;
    mutable x_def: def option }
 
-and paramDecl =
+and localDecl =
   { x_selector : ident;
     x_varName : ident option;
-  x_offset : int}
+    x_offset : int}
 
 and param =
   { p_selector : ident;
@@ -30,9 +30,12 @@ and param =
 
 and message =
   { m_full_name : ident;
-    m_params : paramDecl list;
+    m_params : localDecl list;
+    m_locals : localDecl list;
     m_body : stmt;
-    m_arg_count : int}
+    m_arg_count : int;
+    m_local_count : int;
+    }
 
 and messageSend =
   { s_target : expr;
@@ -71,11 +74,13 @@ val makeClass : ident -> ident -> ident -> ident list -> message list -> classDe
 
 val makeName : ident -> int -> name
 
-val makeParamDecl : ident -> ident option -> paramDecl
+val makeParamDecl : ident -> ident option -> localDecl
+
+val makeLocalVarDecl : ident -> localDecl
 
 val makeParam : ident -> expr option -> param
 
-val makeMessage : paramDecl list -> stmt -> message
+val makeMessage : localDecl list -> localDecl list -> stmt -> message
 
 val makeMessageSend :  expr -> param list -> messageSend
 

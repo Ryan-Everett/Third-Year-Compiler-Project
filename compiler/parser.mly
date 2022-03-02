@@ -8,8 +8,8 @@ open Dict
 %token <char>           CHAR          
 %token <string>         STRING
 %token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE
-%token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT
-%token                  SEMI ASSIGN LPAR RPAR TRUE FALSE INIT NEW RETURN
+%token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR
+%token                  SEMI ASSIGN LPAR RPAR TRUE FALSE INIT NEW RETURN 
                   
 %type <Tree.classDecls>  file
 
@@ -42,9 +42,13 @@ message_decls :
     | message_decl message_decls          { $1 :: $2 };
 
 message_decl :
-      param_decls block                   { makeMessage $1 $2 }
-    | IDENT block                         { makeMessage [makeParamDecl $1 None] $2 }
-    | INIT block                          { makeMessage [makeParamDecl "init" None] $2 };
+      param_decls block                   { makeMessage $1 [] $2 }
+    | IDENT block                         { makeMessage [makeParamDecl $1 None] [] $2}
+    | param_decls BAR local_var_decls BAR block    
+                                          { makeMessage $1 $3 $5 }
+    | IDENT BAR local_var_decls BAR block          
+                                          { makeMessage [makeParamDecl $1 None] $3 $5 }
+    | INIT block                          { makeMessage [makeParamDecl "init" None] [] $2 };
 
 param_decls :
       param_decl                          { [$1] }
@@ -53,6 +57,10 @@ param_decls :
 param_decl :
     | MESSAGE                             { makeParamDecl $1 (None)}
     | MESSAGE IDENT                       { makeParamDecl $1 (Some $2) };
+
+local_var_decls :
+      IDENT                               { [makeLocalVarDecl $1] }
+    | IDENT local_var_decls               { (makeLocalVarDecl $1) :: $2 };
 
 params :
       param                               { [$1] }

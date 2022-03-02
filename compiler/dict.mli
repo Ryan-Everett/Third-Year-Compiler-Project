@@ -14,7 +14,7 @@ type def =
 
 and def_kind =
     VarDef                      (* Variable *)
-  | ParamDef                    (* Parameter *)
+  | LocalDef                    (* Parameter *)
 type environment
 
 (* |define| -- add a definition, raise Exit if already declared *)

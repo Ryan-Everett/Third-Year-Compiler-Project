@@ -73,6 +73,7 @@ rule token =
     | "/"               { DIVIDE }
     | ";"               { SEMI }
     | "^"               { RETURN }
+    | "|"               { BAR }
     | [' ''\t']+        { token lexbuf }
     | "\n"              { incr currLine; token lexbuf}
     | eof               { EOF }

@@ -4,13 +4,17 @@ Object subclass: IntTests
     [
         init [
             v = 7;
-            self println;
+            self localTest;
             v = v * 3 - -7 * 2;
             v println;
             [self add1: 2] println
         ]
 
-        println [
+        localTest 
+        |x y z a b c d e f g h i j k l m n o p q r s|
+        [
+            s = "Local s";
+            s println;
             v println
         ]
 

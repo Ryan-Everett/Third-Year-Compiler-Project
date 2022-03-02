@@ -19,7 +19,7 @@ and name =
    x_line: int;
    mutable x_def: def option }
 
-and paramDecl =
+and localDecl =
   { x_selector : ident;
     x_varName : ident option;
    x_offset : int}
@@ -30,9 +30,11 @@ and param =
 
 and message =
   { m_full_name : ident;
-    m_params : paramDecl list;
+    m_params : localDecl list;
+    m_locals : localDecl list;
     m_body : stmt;
     m_arg_count : int;
+    m_local_count : int;
     }
 
 and messageSend =
@@ -75,6 +77,8 @@ let makeName x ln =
 
 let makeParamDecl selector name = {x_selector = selector; x_varName = name; x_offset = -99}
 
+let makeLocalVarDecl name = {x_selector = "#LOCAL#"; x_varName = Some name; x_offset = -99}
+
 let makeParam selector e = {p_selector = selector; p_expr = e}
 
 let methodDeclID ps st = List.fold_right (fun p st -> p.x_selector ^ st) ps ""
@@ -92,8 +96,10 @@ let numArgs ps = List.fold_right (fun x n -> match x.p_expr with
 let makeClass sup name cat vars messages =
   {c_super = "rt/"^sup; c_name = name; c_category = cat; c_instance_vars = vars; c_messages = messages}
 
-let makeMessage ps ss = 
-  {m_full_name = methodDeclID ps ""; m_params = ps; m_body = ss; m_arg_count = declNumArgs ps }
+let makeMessage ps ls ss = 
+  let arg_count = declNumArgs ps in
+    { m_full_name = methodDeclID ps ""; m_params = ps; m_locals = ls; 
+      m_body = ss; m_arg_count = arg_count; m_local_count = arg_count + declNumArgs ls + 1 }
 
 let makeMessageSend e ps =
   {s_target = e; s_full_name = methodID ps ""; s_params = ps; s_arg_count = numArgs ps }

@@ -18,7 +18,7 @@ type def =
 
 and def_kind =
     VarDef                      (* Variable *)
-  | ParamDef
+  | LocalDef
 
 let find_def x ds =
   let rec search =

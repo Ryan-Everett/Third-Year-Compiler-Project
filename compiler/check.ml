@@ -3,7 +3,7 @@ open Jvm
 open Tree 
 open Dict 
 (*Semantic analysis
-  Assigns labels for paramaters and makes sure instance variables are declared.
+  Assigns labels for paramaters and local vars.
 
   Since the language is dynamically typed we cannot check for type safety here
 
@@ -34,7 +34,7 @@ let declare_field x off env =
 
 (* |declare_local| -- declare a local *)
 let declare_local x off env =
-  let d = { d_tag = x; d_kind = ParamDef; d_level = 0;
+  let d = { d_tag = x; d_kind = LocalDef; d_level = 0;
             d_lab = ""; d_off = off } in
   add_def d env
   
@@ -42,7 +42,7 @@ let declare_local x off env =
   let has_value d = 
     match d.d_kind with
         VarDef -> true 
-      | ParamDef -> true
+      | LocalDef -> true
       | _ -> false
 
 (* |accum| -- fold_left with arguments swapped *)
@@ -102,15 +102,16 @@ let rec check_stmt s env =
         check_expr e env
 
 
-let rec check_param_decls ps n env = 
+let rec check_local_decls ps n env = 
   match ps with
       [] -> env
     | (::) (p, tail) -> match p.x_varName with
-          Some v -> let env' = declare_local v n env in check_param_decls tail (n+1) env'
-        | None -> check_param_decls tail n env
+          Some v -> let env' = declare_local v n env in check_local_decls tail (n+1) env'
+        | None -> check_local_decls tail n env
+
 
 let check_message_decl env m =
-  let env' = check_param_decls m.m_params 1 env in
+  let env' = check_local_decls (List.append m.m_params m.m_locals) 1 env in
     check_stmt m.m_body env'
 
 let check_message_decls mds env =  List.map (check_message_decl env) mds; ()
