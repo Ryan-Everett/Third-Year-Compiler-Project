@@ -1,0 +1,7 @@
+Object subclass: BlockTest
+    category: examples
+    [
+        init [
+
+        ]
+    ]

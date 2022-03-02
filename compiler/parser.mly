@@ -24,7 +24,9 @@ class_decls :
       class_decl                          { [$1] }
     | class_decl class_decls              { $1 :: $2 };  
 class_decl :
-      IDENT SUBCLASS IDENT CATEGORY IDENT  var_names LPAR message_decls RPAR
+      IDENT SUBCLASS IDENT CATEGORY IDENT LPAR message_decls RPAR
+                                          { makeClass $1 $3 $5 [] $7 }
+    | IDENT SUBCLASS IDENT CATEGORY IDENT  var_names LPAR message_decls RPAR
                                           { makeClass $1 $3 $5 $6 $8 };
 
 var_names:
