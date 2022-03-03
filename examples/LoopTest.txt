@@ -1,0 +1,11 @@
+Object subclass: LoopTest
+    category: examples
+    (
+        init (
+            self makeLoop;
+        )
+        makeLoop |i| (
+            i = 0;
+            i < 1000 whileTrue: [i = i + 1; i print];
+        )
+    )

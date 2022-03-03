@@ -14,6 +14,13 @@ and classDecl =
 
 and ident = string
 
+and lab = int
+
+and loop = 
+  { l_cond : expr;
+    l_body : stmt;
+    mutable l_lab_set : lab_set option}
+
 and name = 
   {x_name: ident;
    x_line: int;
@@ -50,7 +57,7 @@ and stmt =
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt
-  | ExplicitWhile of expr * stmt
+  | ExplicitWhileTrue of loop
   | MessageSendVoid of messageSend
   | InitSendVoid of ident
   | Return of expr
@@ -71,6 +78,8 @@ and op = Plus | Minus | Times | Divide
 
 (* seq -- neatly join a list of statements into a sequence *)
 val seq : stmt list -> stmt
+
+val makeLoop : expr -> stmt -> loop
 
 val makeClass : ident -> ident -> ident -> ident list -> message list -> classDecl
 

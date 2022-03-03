@@ -14,6 +14,8 @@ open Dict
 (* |err_line| -- line number for error messages *)
 let err_line = ref 1
 
+let curr_lab = ref 1
+
 (* |Semantic_error| -- exception raised if error detected *)
   exception Semantic_error of string * Print.arg list * int
 
@@ -100,6 +102,12 @@ let rec check_stmt s env =
         check_expr s.s_target env; check_params s.s_params env
     | InitSendVoid c ->
         () (*Maybe check if className is on classpath*)
+    | ExplicitWhileTrue l -> 
+        let l1 = !curr_lab in
+          curr_lab := !curr_lab + 1;
+          check_expr l.l_cond env; check_stmt l.l_body env; 
+          let l2 = !curr_lab in curr_lab := !curr_lab + 1; let l3 = !curr_lab in curr_lab := !curr_lab + 1;
+          l.l_lab_set <- Some {l_lab1 = l1; l_lab2 = l2; l_lab3 = l3 }; ()
     | Return e ->
         check_expr e env
 

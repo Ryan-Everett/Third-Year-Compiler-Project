@@ -17,6 +17,11 @@ and def_kind =
   | LocalDef                    (* Parameter *)
 type environment
 
+type lab_set =
+  { l_lab1 : int;
+    l_lab2 : int;
+    l_lab3 : int }
+
 (* |define| -- add a definition, raise Exit if already declared *)
 val define : def -> environment -> environment
 

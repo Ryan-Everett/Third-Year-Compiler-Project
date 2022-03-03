@@ -14,6 +14,7 @@ Object subclass: Main
             ("Con" ++ "cat" ++ "ena" ++ "ted") println;
             ((("abcd" charAt: 2) + 12) == 'o') println;
             (3 >= 2) println;
+            x = examples/LoopTest new;
             "Test complete!" println;
         )
     )

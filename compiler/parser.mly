@@ -89,7 +89,7 @@ stmt :
     | factor IDENT                        { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
     | IDENT NEW                           { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
-    | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhile ($1, $4)};
+    | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeLoop $1 $4)};
 
 
 expr :

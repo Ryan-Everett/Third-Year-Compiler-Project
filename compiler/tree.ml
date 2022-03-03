@@ -14,10 +14,18 @@ and classDecl =
 
 and ident = string
 
+and lab = int
+
+and loop = 
+  { l_cond : expr;
+    l_body : stmt;
+    mutable l_lab_set : lab_set option}
+
 and name = 
   {x_name: ident;
    x_line: int;
    mutable x_def: def option }
+
 
 and localDecl =
   { x_selector : ident;
@@ -50,7 +58,7 @@ and stmt =
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt  (*Not added yet*)
-  | ExplicitWhile of expr * stmt
+  | ExplicitWhileTrue of loop
   | MessageSendVoid of messageSend
   | InitSendVoid of ident
   | Return of expr
@@ -72,6 +80,9 @@ let seq =
       [] -> Skip                (* Use Skip in place of Seq [] *)
     | [s] -> s                  (* Don't use a Seq node for one element *)
     | ss -> Seq ss
+
+let makeLoop e b =
+  { l_cond = e; l_body = b; l_lab_set = None}
 
 let makeName x ln =
   { x_name = x; x_line = ln; x_def = None }
@@ -160,8 +171,8 @@ let rec fStmt =
         fStr "Newline"
     | IfStmt (e, s1, s2) ->
         fMeta "IfStmt_($, $, $)" [fExpr e; fStmt s1; fStmt s2]
-    | ExplicitWhile (e, s) -> 
-        fMeta "While_($, $)" [fExpr e; fStmt s]
+    | ExplicitWhileTrue loop -> 
+        fMeta "While_($, $)" [fExpr loop.l_cond; fStmt loop.l_body]
     | MessageSendVoid s ->
         fMeta "MessageSendVoid_($, $)" [fExpr s.s_target; fList(fParam) s.s_params]
     | InitSendVoid c ->

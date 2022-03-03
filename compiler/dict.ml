@@ -20,6 +20,11 @@ and def_kind =
     VarDef                      (* Variable *)
   | LocalDef
 
+type lab_set =
+  { l_lab1 : int;
+    l_lab2 : int;
+    l_lab3 : int }
+
 let find_def x ds =
   let rec search =
     function
