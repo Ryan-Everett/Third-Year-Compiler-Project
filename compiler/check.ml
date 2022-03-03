@@ -61,6 +61,8 @@ let rec check_expr e env =
   match e with
       Number (x) -> 
         ()
+    | Boolean (x) ->
+        ()
     | String (x) ->
         ()
     | Char (x) ->

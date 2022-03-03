@@ -14,6 +14,7 @@ type code =
   | DUP                                     (*Duplicate top operand of the stack*)
   | INIT of string                          (*Call to create and initialize class (className) *)
   | INITINT                                 (*Initialise rt/Integer*)
+  | INITBOOL                                (*Initialise rt/Boolean*)
   | INITCHAR                                (*Initialise rt/Char*)
   | INITSTRING                              (*Initialise rt/String*)
   | SLIMIT of int                           (*Limit stack size to n (CHECK THIS) *)

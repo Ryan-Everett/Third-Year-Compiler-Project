@@ -1,8 +1,8 @@
 Object subclass: Main
     category: examples
     vars: x y
-    [
-        init [
+    (
+        init (
             y = examples/IntTests new; x = examples/SavingsAccount new;
             y = 20;
             x deposit: y;
@@ -11,8 +11,9 @@ Object subclass: Main
             x printbal;
             x withdrawal: 20;
             x printbal;
-            ["Con" ++ "cat" ++ "ena" ++ "ted"] println;
-            [["abcd" charAt: 2] + 12] println;
+            ("Con" ++ "cat" ++ "ena" ++ "ted") println;
+            ((("abcd" charAt: 2) + 12) == 'o') println;
+            (3 >= 2) println;
             "Test complete!" println;
-        ]
-    ]
+        )
+    )

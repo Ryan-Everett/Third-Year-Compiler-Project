@@ -13,7 +13,7 @@ let kwtable =
     make_hash 64
         [ ("subclass$", SUBCLASS); ("category$", CATEGORY);
           ("vars$", VARNAMES) ; ("true", TRUE);
-          ("false", FALSE) ; ("init", INIT) ; ("new", NEW)]
+          ("false", FALSE) ; ("init", INIT) ; ("new", NEW) ; ("whileTrue$", WHILETRUE)]
 
 (* |idtable| -- table of all identifiers seen so far *)
 let idtable = Hashtbl.create 64
@@ -33,6 +33,12 @@ let messagelookup s =
         Hashtbl.replace idtable m ();
         MESSAGE m
 
+(* |block_var_lookup| -- convert string to message *)
+let block_var_lookup s =
+    try Hashtbl.find kwtable s with 
+      Not_found -> 
+        Hashtbl.replace idtable s ();
+        BVAR s
 
 (* |get_vars| -- get list of identifiers in the program *)
 let get_vars () = 
@@ -57,20 +63,33 @@ rule token =
                         { lookup s }
     | (letter (letter | digit | '_')* as s)":"
                         { messagelookup s }
+    | ":"(letter (letter | digit | '_')* as s)
+                        { block_var_lookup s}
     | digit+ as s
                         { NUMBER (int_of_string s) }
     | q (char1 as c) q  { CHAR c }
     | q q q q           { CHAR '\'' }
     | qq ((char2 | qq qq)* as s) qq
                         { STRING s }
-    | "["               { LPAR }
-    | "]"               { RPAR }
+    | "("               { LPAR }
+    | ")"               { RPAR }
+    | "["               { LBAR }
+    | "]"               { RBAR }
     | "="               { EQUAL }
     | "+"               { PLUS }
     | "++"              { CONCAT }
     | "-"               { MINUS }
     | "*"               { TIMES }
     | "/"               { DIVIDE }
+    | "&&"              { AND }
+    | "!"               { NOT }
+    | "||"              { OR }
+    | "<"               { LT }
+    | "<="              { LEQ }
+    | ">"               { GT }
+    | ">="              { GEQ }
+    | "=="              { EQ }
+    | "!="              { NEQ }
     | ";"               { SEMI }
     | "^"               { RETURN }
     | "|"               { BAR }

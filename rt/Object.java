@@ -5,10 +5,16 @@ public class Object {
     public Object(){
     }
     //Add a does not understand here]
-    public void print (){
+    public void print () {
         System.out.print(this);
     }
-    public void println(){
+    public void println() {
         System.out.println(this);
+    }
+    public rt.Boolean eq$(rt.Object o) {
+        return new rt.Boolean(this.equals(o));
+    }
+    public rt.Boolean neq$(rt.Object o) {
+        return new rt.Boolean(!this.equals(o));
     }
 }

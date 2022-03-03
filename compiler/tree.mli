@@ -50,7 +50,7 @@ and stmt =
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt
-  | WhileStmt of expr * stmt
+  | ExplicitWhile of expr * stmt
   | MessageSendVoid of messageSend
   | InitSendVoid of ident
   | Return of expr
@@ -58,8 +58,10 @@ and stmt =
   
 and expr =
       Number of int             (* Constant (value) *)
+    | Boolean of int
     | Char of char
     | String of string
+    (*| Block of block *)
     | Variable of name          (* Variable (name) *)
     | MessageSend of messageSend
     | InitSend of ident

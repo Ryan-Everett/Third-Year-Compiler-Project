@@ -50,7 +50,7 @@ and stmt =
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt  (*Not added yet*)
-  | WhileStmt of expr * stmt      (*Not added yet*)
+  | ExplicitWhile of expr * stmt
   | MessageSendVoid of messageSend
   | InitSendVoid of ident
   | Return of expr
@@ -58,6 +58,7 @@ and stmt =
   
 and expr =
     Number of int             (* Constant (value) *)
+    | Boolean of int          (*0 false, 1 true *)
     | Char of char
     | String of string
     | Variable of name          (* Variable (name) *)
@@ -129,6 +130,8 @@ let rec fExpr =
         fMeta "Number_$" [fNum n]
     | Char n ->
         fMeta "Char_\'$\'" [fChr n]
+    | Boolean b ->
+        fMeta "Boolean_\'$\'" [fNum b]
     | String n ->
         fMeta "String_\"$\"" [fStr n]
     | Variable x -> 
@@ -157,8 +160,8 @@ let rec fStmt =
         fStr "Newline"
     | IfStmt (e, s1, s2) ->
         fMeta "IfStmt_($, $, $)" [fExpr e; fStmt s1; fStmt s2]
-    | WhileStmt (e, s) -> 
-        fMeta "WhileStmt_($, $)" [fExpr e; fStmt s]
+    | ExplicitWhile (e, s) -> 
+        fMeta "While_($, $)" [fExpr e; fStmt s]
     | MessageSendVoid s ->
         fMeta "MessageSendVoid_($, $)" [fExpr s.s_target; fList(fParam) s.s_params]
     | InitSendVoid c ->

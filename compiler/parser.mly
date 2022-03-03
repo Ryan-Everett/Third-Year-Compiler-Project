@@ -2,14 +2,15 @@
 open Tree
 open Dict
 %}
-%token <Dict.ident>     IDENT MESSAGE
+%token <Dict.ident>     IDENT MESSAGE BVAR
 %token <int>            NUMBER
 %token <float>
 %token <char>           CHAR          
 %token <string>         STRING
-%token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE
+%token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE WHILETRUE
 %token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR
-%token                  SEMI ASSIGN LPAR RPAR TRUE FALSE INIT NEW RETURN 
+%token                  SEMI ASSIGN LPAR RPAR LBAR RBAR TRUE FALSE INIT NEW RETURN 
+%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT
                   
 %type <Tree.classDecls>  file
 
@@ -42,13 +43,13 @@ message_decls :
     | message_decl message_decls          { $1 :: $2 };
 
 message_decl :
-      param_decls block                   { makeMessage $1 [] $2 }
-    | IDENT block                         { makeMessage [makeParamDecl $1 None] [] $2}
-    | param_decls BAR local_var_decls BAR block    
+      param_decls stmt_group              { makeMessage $1 [] $2 }
+    | IDENT stmt_group                    { makeMessage [makeParamDecl $1 None] [] $2}
+    | param_decls BAR local_var_decls BAR stmt_group    
                                           { makeMessage $1 $3 $5 }
-    | IDENT BAR local_var_decls BAR block          
+    | IDENT BAR local_var_decls BAR stmt_group          
                                           { makeMessage [makeParamDecl $1 None] $3 $5 }
-    | INIT block                          { makeMessage [makeParamDecl "init" None] [] $2 };
+    | INIT stmt_group                     { makeMessage [makeParamDecl "init" None] [] $2 };
 
 param_decls :
       param_decl                          { [$1] }
@@ -71,7 +72,7 @@ param :
     | MESSAGE variable                    { makeParam $1 (Some $2) };
     | MESSAGE LPAR expr RPAR              { makeParam $1 (Some $3) };
 
-block :
+stmt_group :
       LPAR stmts RPAR                     { $2 };
 
 stmts :
@@ -86,34 +87,48 @@ stmt :
     | variable EQUAL expr                 { Assign ($1, $3)}
     | factor params                       { MessageSendVoid (makeMessageSend $1 $2)}
     | factor IDENT                        { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
-    | IDENT NEW                           { InitSendVoid ($1)};
+    | IDENT NEW                           { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
+    | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhile ($1, $4)};
+
 
 expr :
       expr2                               { $1 }
     | expr PLUS expr2                     { MessageSend (makeMessageSend $1 [makeParam "add$" (Some($3))]) }
     | expr MINUS expr2                    { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
     | expr CONCAT expr2                   { MessageSend (makeMessageSend $1 [makeParam "concat$" (Some($3))]) }
+    | expr OR expr2                       { MessageSend (makeMessageSend $1 [makeParam "or$" (Some($3))]) }
 expr2 : 
       factor                              { $1 }
     | expr2 TIMES factor                  { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
     | expr2 DIVIDE factor                 { MessageSend (makeMessageSend $1 [makeParam "div$" (Some($3))]) }
+    | expr2 AND factor                    { MessageSend (makeMessageSend $1 [makeParam "and$" (Some($3))]) }
     | factor params                       { MessageSend (makeMessageSend $1 $2)}
     | IDENT NEW                           { InitSend ($1)}; 
 
 factor :
       factor2                             { $1 }
     | factor IDENT                        { MessageSend (makeMessageSend $1 [makeParam $2 (None)]) }
+    | expr2 LT factor                     { MessageSend (makeMessageSend $1 [makeParam "lt$" (Some($3))]) }
+    | expr2 LEQ factor                    { MessageSend (makeMessageSend $1 [makeParam "leq$" (Some($3))]) }
+    | expr2 EQ factor                     { MessageSend (makeMessageSend $1 [makeParam "eq$" (Some($3))]) }
+    | expr2 NEQ factor                    { MessageSend (makeMessageSend $1 [makeParam "neq$" (Some($3))]) }
+    | expr2 GEQ factor                    { MessageSend (makeMessageSend $1 [makeParam "geq$" (Some($3))]) }
+    | expr2 GT factor                     { MessageSend (makeMessageSend $1 [makeParam "gt$" (Some($3))]) };
 
 factor2 :
       variable                            { $1 }
     | MINUS factor2                       { MessageSend (makeMessageSend $2 [makeParam "minus" None]) }
+    | NOT factor2                         { MessageSend (makeMessageSend $2 [makeParam "not" None]) }
     | LPAR expr RPAR                      { $2 };
+
 variable :
     | name                                { Variable ($1) }
-    | NUMBER                              { Number ($1) };
+    | NUMBER                              { Number ($1) }
     | CHAR                                { Char ($1) }
-    | STRING                              { String ($1) };
+    | STRING                              { String ($1) }
+    | TRUE                                { Boolean(1) }
+    | FALSE                               { Boolean(0) };
 
 name :  
     IDENT                                 { makeName $1 !Lexer.currLine } ;

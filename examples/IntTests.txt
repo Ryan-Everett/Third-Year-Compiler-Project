@@ -1,25 +1,25 @@
 Object subclass: IntTests
     category: examples
     vars: v
-    [
-        init [
+    (
+        init (
             v = 7;
             self localTest;
             v = v * 3 - -7 * 2;
             v println;
-            [self add1: 2] println
-        ]
+            (self add1: 2) println
+        )
 
         localTest 
         |x y z a b c d e f g h i j k l m n o p q r s|
-        [
+        (
             s = "Local s";
             s println;
             v println
-        ]
+        )
 
-        add1: x [
+        add1: x (
             x = x + 1;
             ^x
-        ]
-    ]
+        )
+    )

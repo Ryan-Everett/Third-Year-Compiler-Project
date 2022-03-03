@@ -1,5 +1,7 @@
 package rt;
 
+import java.net.PortUnreachableException;
+
 public class Integer extends rt.Object{
     public static final rt.Integer [] smallInts = new rt.Integer [128];
     static {
@@ -39,5 +41,23 @@ public class Integer extends rt.Object{
     }
     public rt.Integer mod$ (rt.Integer x){
         return new rt.Integer(value % x.value);
+    }
+    public rt.Boolean eq$ (rt.Integer x){
+        return new rt.Boolean(value == x.value);
+    }
+    public rt.Boolean neq$ (rt.Integer x){
+        return new rt.Boolean(value != x.value);
+    }
+    public rt.Boolean lt$ (rt.Integer x){
+        return new rt.Boolean(value < x.value);
+    }
+    public rt.Boolean leq$ (rt.Integer x){
+        return new rt.Boolean(value <= x.value);
+    }
+    public rt.Boolean gt$ (rt.Integer x){
+        return new rt.Boolean(value > x.value);
+    }
+    public rt.Boolean geq$ (rt.Integer x){
+        return new rt.Boolean(value >= x.value);
     }
 }

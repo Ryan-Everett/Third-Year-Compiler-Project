@@ -22,6 +22,7 @@ let rec gen_expr c e =
         (*Small numbers are preallocated*)
         if x < 128 then SEQ[SMALLINTS; BIPUSH x; AALOAD]
         else SEQ[NEW "rt/Integer"; DUP; SIPUSH x; INITINT]
+    | Boolean b -> SEQ[ NEW "rt/Boolean"; DUP; ICONST b; INITBOOL]
     | Char x ->
         SEQ[NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
     | String x ->
