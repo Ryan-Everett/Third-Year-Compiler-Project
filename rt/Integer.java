@@ -24,6 +24,10 @@ public class Integer extends rt.Object{
         System.out.println(value);
     }
     
+    public int $get$(){
+        return this.value;
+    }
+
     public rt.Integer minus () {
         return new rt.Integer(-value);
     }

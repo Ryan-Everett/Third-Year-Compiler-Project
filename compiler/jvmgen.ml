@@ -58,7 +58,7 @@ and gen_stmt c s =
     | ExplicitWhileTrue s ->
       (match s.l_lab_set with
         Some l ->
-          SEQ [GOTO l.l_lab2; LAB l.l_lab1;gen_stmt c s.l_body; LAB l.l_lab2; gen_expr c s.l_cond; IFNE l.l_lab3; GOTO l.l_lab1; LAB l.l_lab3; ]
+          SEQ [GOTO l.l_lab2; LAB l.l_lab1;gen_stmt c s.l_body; LAB l.l_lab2; gen_expr c s.l_cond; GETBOOL; IFEQ l.l_lab3; GOTO l.l_lab1; LAB l.l_lab3; ]
       )
     | Return e -> 
         SEQ [gen_expr c e; ARETURN; STACKMAP]

@@ -14,6 +14,10 @@ public class Boolean extends rt.Object{
         System.out.println(value);
     }
 
+    public boolean $get$(){
+        return this.value;
+    }
+
     public rt.Boolean and$(rt.Boolean b2){
         return new rt.Boolean(value && b2.value);
     }

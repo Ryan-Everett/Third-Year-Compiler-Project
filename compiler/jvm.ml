@@ -40,9 +40,10 @@ type code =
   | ICONST of int                           (*Constant Int in range [-1, 5] *)
   | BIPUSH of int                           (*Constant Int in range [-128, 127] *)
   | SIPUSH of int                           (*Constant Int in range [-32768, 32767] *)
-  | IFNE of int                             (*Branch to lab if value on stack is not equal to 0 *)
+  | IFEQ of int                             (*Branch to lab if value on stack is not equal to 0 *)
   | GOTO of int                             (*Unconditional branch *)
   | LAB of int                              (*Declare label *)
+  | GETBOOL                                 (*Get the java boolean stored within a rt/Boolean *)
   | SEQ of code list
   | NOP                                     (*Null operation*)
 
@@ -105,9 +106,10 @@ let rec fInst =
         | ICONST x ->                   fMeta "iconst_$" [fNum x]
         | BIPUSH x ->                   fMeta "bipush $" [fNum x]
         | SIPUSH x ->                   fMeta "sipush $" [fNum x]
-        | IFNE x ->                     fMeta "ifne L$" [fNum x]
+        | IFEQ x ->                     fMeta "ifeq L$" [fNum x]
         | GOTO x ->                     fMeta "goto L$" [fNum x]
         | LAB x ->                      fMeta "L$:"     [fNum x]
+        | GETBOOL ->                    fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:$get$' (Ljava/lang/Object;)Z"
         | SEQ l ->                      fMeta "$\nSEQ" [fInst(List.hd l)]
         | NOP ->                        fStr""
         | _ ->                          fStr"NO INSTRUCTION FOUND"
