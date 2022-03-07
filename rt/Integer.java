@@ -64,4 +64,8 @@ public class Integer extends rt.Object{
     public rt.Boolean geq$ (rt.Integer x){
         return new rt.Boolean(value >= x.value);
     }
+
+    public String concat$(rt.String x) {
+        return new String(value + x.value);
+    }
 }

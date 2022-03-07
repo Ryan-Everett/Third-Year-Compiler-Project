@@ -23,4 +23,8 @@ public class String extends rt.Object {
     public String concat$(rt.String s) {
         return new String(value.concat(s.value));
     }
+
+    public String concat$(rt.Integer x) {
+        return new String(value + x.value);
+    }
 }

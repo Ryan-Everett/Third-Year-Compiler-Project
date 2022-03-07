@@ -9,8 +9,7 @@ Object subclass: LoopTest
             "Loop Starting" println;
             i < 20 whileTrue: [
                 (i % 2) == 0 ifTrue: [
-                    i print;
-                    ", " print;
+                    i ++ ", " print;
                 ]
                 else: ["ODD, " print];
                 i = i + 1; 
