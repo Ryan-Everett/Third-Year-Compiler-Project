@@ -16,10 +16,16 @@ and ident = string
 
 and lab = int
 
-and loop = 
+and branch = 
   { l_cond : expr;
     l_body : stmt;
     mutable l_lab_set : lab_set option}
+
+and ifElse = 
+  { ie_cond : expr;
+    ie_ifStmt : stmt;
+    ie_elseStmt : stmt;
+    mutable ie_lab_set : lab_set option}
 
 and name = 
   {x_name: ident;
@@ -57,7 +63,9 @@ and stmt =
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt
-  | ExplicitWhileTrue of loop
+  | ExplicitWhileTrue of branch
+  | ExplicitIfTrue of branch
+  | ExplicitIfTrueElse of ifElse
   | MessageSendVoid of messageSend
   | InitSendVoid of ident
   | Return of expr
@@ -79,7 +87,9 @@ and op = Plus | Minus | Times | Divide
 (* seq -- neatly join a list of statements into a sequence *)
 val seq : stmt list -> stmt
 
-val makeLoop : expr -> stmt -> loop
+val makeBranch : expr -> stmt -> branch
+
+val makeIfElse : expr -> stmt -> stmt -> ifElse
 
 val makeClass : ident -> ident -> ident -> ident list -> message list -> classDecl
 

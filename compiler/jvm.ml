@@ -36,11 +36,10 @@ type code =
   | POP                                     (*Pop head of stack *)
   | RETURN                                  (*Return from method *)
   | ARETURN                                 (*Return reference from method *)
-  | STACKMAP                                (*Define a StackMapTable to please the jvm verifier *)
   | ICONST of int                           (*Constant Int in range [-1, 5] *)
   | BIPUSH of int                           (*Constant Int in range [-128, 127] *)
   | SIPUSH of int                           (*Constant Int in range [-32768, 32767] *)
-  | IFEQ of int                             (*Branch to lab if value on stack is not equal to 0 *)
+  | IFEQ of int                             (*Branch to lab if value on stack is equal to 0. i.e. if false *)
   | GOTO of int                             (*Unconditional branch *)
   | LAB of int                              (*Declare label *)
   | GETBOOL                                 (*Get the java boolean stored within a rt/Boolean *)
@@ -102,7 +101,6 @@ let rec fInst =
         | POP ->                        fStr "pop"
         | RETURN ->                     fStr "return"
         | ARETURN ->                    fStr "areturn"
-        | STACKMAP ->                   fStr ".stack same"
         | ICONST x ->                   fMeta "iconst_$" [fNum x]
         | BIPUSH x ->                   fMeta "bipush $" [fNum x]
         | SIPUSH x ->                   fMeta "sipush $" [fNum x]

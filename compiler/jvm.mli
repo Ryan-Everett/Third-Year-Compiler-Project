@@ -33,7 +33,6 @@ type code =
   | POP                                     (*Pop head of stack *)
   | RETURN                                  (*Return from method *)
   | ARETURN                                 (*Return reference from method *)
-  | STACKMAP                                (*Define a StackMapTable to please the jvm verifier *)
   | ICONST of int                           (*Constant Int in range [-1, 5] *)
   | BIPUSH of int                           (*Constant Int in range [-128, 127] *)
   | SIPUSH of int                           (*Constant Int in range [-32768, 32767] *)

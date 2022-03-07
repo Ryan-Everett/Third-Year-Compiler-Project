@@ -60,8 +60,19 @@ and gen_stmt c s =
         Some l ->
           SEQ [GOTO l.l_lab2; LAB l.l_lab1;gen_stmt c s.l_body; LAB l.l_lab2; gen_expr c s.l_cond; GETBOOL; IFEQ l.l_lab3; GOTO l.l_lab1; LAB l.l_lab3; ]
       )
+    | ExplicitIfTrue s ->
+      (match s.l_lab_set with
+        Some l ->
+          SEQ [gen_expr c s.l_cond; GETBOOL; IFEQ l.l_lab1; gen_stmt c s.l_body; LAB l.l_lab1]
+      )
+    | ExplicitIfTrueElse s ->
+      (match s.ie_lab_set with 
+        Some l ->
+          SEQ [gen_expr c s.ie_cond; GETBOOL; IFEQ l.l_lab1; gen_stmt c s.ie_ifStmt; GOTO l.l_lab2; LAB l.l_lab1; gen_stmt c s.ie_elseStmt; LAB l.l_lab2; ]
+          )
+
     | Return e -> 
-        SEQ [gen_expr c e; ARETURN; STACKMAP]
+        SEQ [gen_expr c e; ARETURN;]
 
 let gen_message_decl c m =
   if m.m_full_name = "init" then 

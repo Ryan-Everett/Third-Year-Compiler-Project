@@ -1,0 +1,12 @@
+Object subclass: BranchTest
+    category: examples
+    (
+        init (
+            self makeLoop;
+        )
+        makeLoop |i| (
+            i = 0;
+            "Loop Starting" println;
+            i < 10 whileTrue: [i print; ", " print; i = i + 1; ];
+        )
+    )

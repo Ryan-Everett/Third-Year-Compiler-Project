@@ -10,7 +10,7 @@ open Dict
 %token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE WHILETRUE
 %token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR
 %token                  SEMI ASSIGN LPAR RPAR LBAR RBAR TRUE FALSE INIT NEW RETURN 
-%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT
+%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT IFTRUE ELSE MOD
                   
 %type <Tree.classDecls>  file
 
@@ -89,12 +89,16 @@ stmt :
     | factor IDENT                        { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
     | IDENT NEW                           { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
-    | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeLoop $1 $4)};
+    | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeBranch $1 $4)}
+    | expr IFTRUE LBAR stmts RBAR         { ExplicitIfTrue (makeBranch $1 $4)}
+    | expr IFTRUE LBAR stmts RBAR ELSE LBAR stmts RBAR
+                                          { ExplicitIfTrueElse (makeIfElse $1 $4 $8)};
 
 
 expr :
       expr2                               { $1 }
     | expr PLUS expr2                     { MessageSend (makeMessageSend $1 [makeParam "add$" (Some($3))]) }
+    | expr MOD expr2                     { MessageSend (makeMessageSend $1 [makeParam "mod$" (Some($3))]) }
     | expr MINUS expr2                    { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
     | expr CONCAT expr2                   { MessageSend (makeMessageSend $1 [makeParam "concat$" (Some($3))]) }
     | expr OR expr2                       { MessageSend (makeMessageSend $1 [makeParam "or$" (Some($3))]) }

@@ -13,7 +13,7 @@ let kwtable =
     make_hash 64
         [ ("subclass$", SUBCLASS); ("category$", CATEGORY);
           ("vars$", VARNAMES) ; ("true", TRUE);
-          ("false", FALSE) ; ("init", INIT) ; ("new", NEW) ; ("whileTrue$", WHILETRUE)]
+          ("false", FALSE) ; ("init", INIT) ; ("new", NEW) ; ("whileTrue$", WHILETRUE) ; ("ifTrue$", IFTRUE) ; ("else$", ELSE)]
 
 (* |idtable| -- table of all identifiers seen so far *)
 let idtable = Hashtbl.create 64
@@ -81,6 +81,7 @@ rule token =
     | "-"               { MINUS }
     | "*"               { TIMES }
     | "/"               { DIVIDE }
+    | "%"               { MOD }
     | "&&"              { AND }
     | "!"               { NOT }
     | "||"              { OR }

@@ -7,6 +7,13 @@ Object subclass: LoopTest
         makeLoop |i| (
             i = 0;
             "Loop Starting" println;
-            i < 10 whileTrue: [i print; ", " print; i = i + 1; ];
+            i < 20 whileTrue: [
+                (i % 2) == 0 ifTrue: [
+                    i print;
+                    ", " print;
+                ]
+                else: ["ODD, " print];
+                i = i + 1; 
+            ];
         )
     )

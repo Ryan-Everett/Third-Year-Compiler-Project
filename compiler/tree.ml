@@ -16,10 +16,16 @@ and ident = string
 
 and lab = int
 
-and loop = 
+and branch = 
   { l_cond : expr;
     l_body : stmt;
     mutable l_lab_set : lab_set option}
+
+and ifElse = 
+  { ie_cond : expr;
+    ie_ifStmt : stmt;
+    ie_elseStmt : stmt;
+    mutable ie_lab_set : lab_set option}
 
 and name = 
   {x_name: ident;
@@ -58,7 +64,9 @@ and stmt =
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt  (*Not added yet*)
-  | ExplicitWhileTrue of loop
+  | ExplicitWhileTrue of branch
+  | ExplicitIfTrue of branch
+  | ExplicitIfTrueElse of ifElse
   | MessageSendVoid of messageSend
   | InitSendVoid of ident
   | Return of expr
@@ -81,8 +89,11 @@ let seq =
     | [s] -> s                  (* Don't use a Seq node for one element *)
     | ss -> Seq ss
 
-let makeLoop e b =
+let makeBranch e b =
   { l_cond = e; l_body = b; l_lab_set = None}
+
+let makeIfElse e s1 s2 = 
+  { ie_cond = e; ie_ifStmt = s1; ie_elseStmt = s2; ie_lab_set = None}
 
 let makeName x ln =
   { x_name = x; x_line = ln; x_def = None }
@@ -171,8 +182,8 @@ let rec fStmt =
         fStr "Newline"
     | IfStmt (e, s1, s2) ->
         fMeta "IfStmt_($, $, $)" [fExpr e; fStmt s1; fStmt s2]
-    | ExplicitWhileTrue loop -> 
-        fMeta "While_($, $)" [fExpr loop.l_cond; fStmt loop.l_body]
+    | ExplicitWhileTrue branch -> 
+        fMeta "While_($, $)" [fExpr branch.l_cond; fStmt branch.l_body]
     | MessageSendVoid s ->
         fMeta "MessageSendVoid_($, $)" [fExpr s.s_target; fList(fParam) s.s_params]
     | InitSendVoid c ->
