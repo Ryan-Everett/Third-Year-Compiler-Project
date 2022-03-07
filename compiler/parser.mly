@@ -85,8 +85,8 @@ stmt_list :
 stmt :
       /* empty */                         { Skip }
     | variable EQUAL expr                 { Assign ($1, $3)}
-    | exprB params                       { MessageSendVoid (makeMessageSend $1 $2)}
-    | exprB IDENT                        { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
+    | exprB params                        { MessageSendVoid (makeMessageSend $1 $2)}
+    | exprB IDENT                         { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
     | IDENT NEW                           { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
     | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeBranch $1 $4)}
@@ -99,36 +99,36 @@ expr :
       exprA                               { $1}
 exprA:
       exprB                               { $1 }
-    | exprB params                       { MessageSend (makeMessageSend $1 $2)};
-    | exprB IDENT                        { MessageSend (makeMessageSend $1 [makeParam $2 (None)]) }
+    | exprB params                        { MessageSend (makeMessageSend $1 $2)};
+    | exprB IDENT                         { MessageSend (makeMessageSend $1 [makeParam $2 (None)]) }
 
 exprB:
-      expr2                               { $1 }
-    | exprB PLUS expr2                     { MessageSend (makeMessageSend $1 [makeParam "add$" (Some($3))]) }
-    | exprB MOD expr2                     { MessageSend (makeMessageSend $1 [makeParam "mod$" (Some($3))]) }
-    | exprB MINUS expr2                    { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
-    | exprB CONCAT expr2                   { MessageSend (makeMessageSend $1 [makeParam "concat$" (Some($3))]) }
-    | exprB OR expr2                       { MessageSend (makeMessageSend $1 [makeParam "or$" (Some($3))]) }
-expr2 : 
-      factor                              { $1 }
-    | expr2 TIMES factor                  { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
-    | expr2 DIVIDE factor                 { MessageSend (makeMessageSend $1 [makeParam "div$" (Some($3))]) }
-    | expr2 AND factor                    { MessageSend (makeMessageSend $1 [makeParam "and$" (Some($3))]) }
+      exprC                               { $1 }
+    | exprB PLUS exprC                    { MessageSend (makeMessageSend $1 [makeParam "add$" (Some($3))]) }
+    | exprB MOD exprC                     { MessageSend (makeMessageSend $1 [makeParam "mod$" (Some($3))]) }
+    | exprB MINUS exprC                   { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
+    | exprB CONCAT exprC                  { MessageSend (makeMessageSend $1 [makeParam "concat$" (Some($3))]) }
+    | exprB OR exprC                      { MessageSend (makeMessageSend $1 [makeParam "or$" (Some($3))]) }
+exprC : 
+      exprD                               { $1 }
+    | exprC TIMES exprD                   { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
+    | exprC DIVIDE exprD                  { MessageSend (makeMessageSend $1 [makeParam "div$" (Some($3))]) }
+    | exprC AND exprD                     { MessageSend (makeMessageSend $1 [makeParam "and$" (Some($3))]) }
     | IDENT NEW                           { InitSend ($1)}; 
 
-factor :
-      factor2                             { $1 }
-    | factor LT factor2                     { MessageSend (makeMessageSend $1 [makeParam "lt$" (Some($3))]) }
-    | factor LEQ factor2                    { MessageSend (makeMessageSend $1 [makeParam "leq$" (Some($3))]) }
-    | factor EQ factor2                     { MessageSend (makeMessageSend $1 [makeParam "eq$" (Some($3))]) }
-    | factor NEQ factor2                   { MessageSend (makeMessageSend $1 [makeParam "neq$" (Some($3))]) }
-    | factor GEQ factor2                    { MessageSend (makeMessageSend $1 [makeParam "geq$" (Some($3))]) }
-    | factor GT factor2                     { MessageSend (makeMessageSend $1 [makeParam "gt$" (Some($3))]) };
+exprD :
+      exprE                               { $1 }
+    | exprD LT exprE                      { MessageSend (makeMessageSend $1 [makeParam "lt$" (Some($3))]) }
+    | exprD LEQ exprE                     { MessageSend (makeMessageSend $1 [makeParam "leq$" (Some($3))]) }
+    | exprD EQ exprE                      { MessageSend (makeMessageSend $1 [makeParam "eq$" (Some($3))]) }
+    | exprD NEQ exprE                     { MessageSend (makeMessageSend $1 [makeParam "neq$" (Some($3))]) }
+    | exprD GEQ exprE                     { MessageSend (makeMessageSend $1 [makeParam "geq$" (Some($3))]) }
+    | exprD GT exprE                      { MessageSend (makeMessageSend $1 [makeParam "gt$" (Some($3))]) };
 
-factor2 :
+exprE :
       variable                            { $1 }
-    | MINUS factor2                       { MessageSend (makeMessageSend $2 [makeParam "minus" None]) }
-    | NOT factor2                         { MessageSend (makeMessageSend $2 [makeParam "not" None]) }
+    | MINUS exprE                         { MessageSend (makeMessageSend $2 [makeParam "minus" None]) }
+    | NOT exprE                           { MessageSend (makeMessageSend $2 [makeParam "not" None]) }
     | LPAR expr RPAR                      { $2 };
 
 variable :

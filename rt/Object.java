@@ -11,6 +11,15 @@ public class Object {
     public void println() {
         System.out.println(this);
     }
+
+    public rt.String makeString() {
+        return new rt.String(this.toString());
+    }
+
+    public rt.String concat$(rt.Object o) {
+        return this.makeString().concat$(o.makeString());
+    }
+
     public rt.Boolean eq$(rt.Object o) {
         return new rt.Boolean(this.equals(o));
     }

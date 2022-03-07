@@ -15,6 +15,12 @@ public class Char extends rt.Object{
     public void println() {
         System.out.println(value);
     }
+
+    @Override
+    public String makeString() {
+        return new rt.String(this);
+    }
+
     public rt.Char add$ (rt.Char x){
         return new rt.Char((char) (value + x.value));
     }

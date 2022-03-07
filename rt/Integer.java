@@ -1,7 +1,5 @@
 package rt;
 
-import java.net.PortUnreachableException;
-
 public class Integer extends rt.Object{
     public static final rt.Integer [] smallInts = new rt.Integer [128];
     static {
@@ -24,6 +22,11 @@ public class Integer extends rt.Object{
         System.out.println(value);
     }
     
+    @Override
+    public String makeString() {
+        return new rt.String(this);
+    }
+
     public int $get$(){
         return this.value;
     }
@@ -63,9 +66,5 @@ public class Integer extends rt.Object{
     }
     public rt.Boolean geq$ (rt.Integer x){
         return new rt.Boolean(value >= x.value);
-    }
-
-    public String concat$(rt.String x) {
-        return new String(value + x.value);
     }
 }
