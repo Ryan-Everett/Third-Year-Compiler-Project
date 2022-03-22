@@ -84,7 +84,7 @@ let rec fInst =
         | NEW n->                       fMeta "new $" [fStr n]
         | DUP ->                        fStr "dup"
         | INIT n ->                     fMeta "invokespecial Method $ <init> ()V" [fStr n]
-        | INITINT ->                    fStr "invokespecial Method rt/Integer <init> (I)V"
+        | INITINT ->                    fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:createInt' (Ljava/lang/Object;I)Lrt/Integer;"
         | INITBOOL ->                   fStr "invokespecial Method rt/Boolean <init> (Z)V"
         | INITCHAR ->                   fStr "invokespecial Method rt/Char <init> (C)V"
         | INITSTRING ->                 fStr "invokespecial Method rt/String <init> (Ljava/lang/String;)V"

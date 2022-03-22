@@ -6,11 +6,11 @@ public class Array extends rt.Object{
 
     public Array (rt.Integer x) {
         value = new Object[x.value] ;
-        length = new rt.Integer(x.value);
+        length = rt.Integer.createInt(x.value);
     }
     public Array (rt.Object [] os) {
         value = os;
-        length = new rt.Integer(os.length);
+        length = rt.Integer.createInt(os.length);
     }
 
     @Override

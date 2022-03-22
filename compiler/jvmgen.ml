@@ -18,10 +18,7 @@ let rec gen_expr c e =
             | LocalDef -> SEQ [ALOAD d.d_off]
           )
       )
-    | Number x ->
-        (*Small numbers are preallocated*)
-        if x < 128 then SEQ[SMALLINTS; gen_num x; AALOAD]
-        else SEQ[NEW "rt/Integer"; DUP; gen_num x; INITINT]
+    | Number x -> SEQ[LDCLASS "rt/Integer"; GETMETA; gen_num x; INITINT]
     | Boolean b -> SEQ[ NEW "rt/Boolean"; DUP; ICONST b; INITBOOL]
     | Char x ->
         SEQ [NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
