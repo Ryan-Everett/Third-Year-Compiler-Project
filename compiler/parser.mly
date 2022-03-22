@@ -10,7 +10,7 @@ open Dict
 %token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE WHILETRUE
 %token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR
 %token                  SEMI ASSIGN LPAR RPAR LBAR RBAR TRUE FALSE INIT NEW RETURN 
-%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT IFTRUE ELSE MOD
+%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT IFTRUE ELSE MOD HASH
                   
 %type <Tree.classDecls>  file
 
@@ -24,6 +24,7 @@ file :
 class_decls :
       class_decl                          { [$1] }
     | class_decl class_decls              { $1 :: $2 };  
+
 class_decl :
       IDENT SUBCLASS IDENT CATEGORY IDENT LPAR message_decls RPAR
                                           { makeClass $1 $3 $5 [] $7 }
@@ -49,7 +50,9 @@ message_decl :
                                           { makeMessage $1 $3 $5 }
     | IDENT BAR local_var_decls BAR stmt_group          
                                           { makeMessage [makeParamDecl $1 None] $3 $5 }
-    | INIT stmt_group                     { makeMessage [makeParamDecl "init" None] [] $2 };
+    | INIT stmt_group                     { makeMessage [makeParamDecl "init" None] [] $2 }
+    | INIT BAR local_var_decls BAR stmt_group
+                                          { makeMessage [makeParamDecl "init" None] $3 $5};
 
 param_decls :
       param_decl                          { [$1] }
@@ -94,9 +97,13 @@ stmt :
     | expr IFTRUE LBAR stmts RBAR ELSE LBAR stmts RBAR
                                           { ExplicitIfTrueElse (makeIfElse $1 $4 $8)};
 
+expr_list :
+      expr                                { [$1] }
+    | expr expr_list                      { $1 :: $2 };
 
 expr :
       exprA                               { $1}
+
 exprA:
       exprB                               { $1 }
     | exprB params                        { MessageSend (makeMessageSend $1 $2)};
@@ -109,6 +116,7 @@ exprB:
     | exprB MINUS exprC                   { MessageSend (makeMessageSend $1 [makeParam "minus$" (Some($3))]) }
     | exprB CONCAT exprC                  { MessageSend (makeMessageSend $1 [makeParam "concat$" (Some($3))]) }
     | exprB OR exprC                      { MessageSend (makeMessageSend $1 [makeParam "or$" (Some($3))]) }
+
 exprC : 
       exprD                               { $1 }
     | exprC TIMES exprD                   { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
@@ -133,6 +141,7 @@ exprE :
 
 variable :
     | name                                { Variable ($1) }
+    | HASH LPAR expr_list RPAR            { Array ($3) }
     | NUMBER                              { Number ($1) }
     | CHAR                                { Char ($1) }
     | STRING                              { String ($1) }

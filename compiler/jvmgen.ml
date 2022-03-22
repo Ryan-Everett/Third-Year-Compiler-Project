@@ -20,14 +20,29 @@ let rec gen_expr c e =
       )
     | Number x ->
         (*Small numbers are preallocated*)
-        if x < 128 then SEQ[SMALLINTS; BIPUSH x; AALOAD]
-        else SEQ[NEW "rt/Integer"; DUP; SIPUSH x; INITINT]
+        if x < 128 then SEQ[SMALLINTS; gen_num x; AALOAD]
+        else SEQ[NEW "rt/Integer"; DUP; gen_num x; INITINT]
     | Boolean b -> SEQ[ NEW "rt/Boolean"; DUP; ICONST b; INITBOOL]
     | Char x ->
-        SEQ[NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
+        SEQ [NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
     | String x ->
-        SEQ[NEW "rt/String"; DUP; LDC x; INITSTRING]
+        SEQ [NEW "rt/String"; DUP; LDC x; INITSTRING]
+    | Array es ->
+        SEQ [NEW "rt/Array"; DUP;ICONST (List.length es); ANEWARRAY; gen_array_innards c es; INITARRAY]
     | _ -> SEQ[]
+
+and gen_num x = 
+  if x < 6 then SEQ[ICONST x]
+  else if x < 128 then SEQ[BIPUSH x]
+  else SEQ[SIPUSH x]
+
+and gen_array_innards c es =
+  let curr_index = ref 0
+    in SEQ(List.map (
+      fun e -> let code = SEQ[DUP; gen_num !curr_index; gen_expr c e; AASTORE;]
+                in incr curr_index;
+                code;
+      ) es)
 
 and gen_param c p =
   match p.p_expr with

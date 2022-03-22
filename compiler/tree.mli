@@ -60,6 +60,7 @@ and stmt =
     Skip 
   | Seq of stmt list
   | Assign of expr * expr
+(*| BlockAssign of expr * block *)
   | Print of expr
   | Newline
   | IfStmt of expr * stmt * stmt
@@ -76,7 +77,7 @@ and expr =
     | Boolean of int
     | Char of char
     | String of string
-    (*| Block of block *)
+    | Array of expr list
     | Variable of name          (* Variable (name) *)
     | MessageSend of messageSend
     | InitSend of ident

@@ -77,6 +77,7 @@ and expr =
     | Boolean of int          (*0 false, 1 true *)
     | Char of char
     | String of string
+    | Array of expr list
     | Variable of name          (* Variable (name) *)
     | MessageSend of messageSend
     | InitSend of ident

@@ -75,6 +75,7 @@ rule token =
     | ")"               { RPAR }
     | "["               { LBAR }
     | "]"               { RBAR }
+    | "#"               { HASH }
     | "="               { EQUAL }
     | "+"               { PLUS }
     | "++"              { CONCAT }

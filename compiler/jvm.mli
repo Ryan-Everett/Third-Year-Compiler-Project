@@ -17,10 +17,12 @@ type code =
   | INITBOOL                                (*Initialise rt/Boolean*)
   | INITCHAR                                (*Initialise rt/Char*)
   | INITSTRING                              (*Initialise rt/String*)
+  | INITARRAY                               (*Initialise rt/Array*)
   | SLIMIT of int                           (*Limit stack size to n (CHECK THIS) *)
   | LLIMIT of int                           (*Limit local size to n (CHECK THIS) *)
   | ASTORE of int                           (*Store reference into local variable (location) *)
   | ALOAD of int                            (*Load reference from local variable (location) *)
+  | AASTORE                                 (*Store into reference array*)
   | AALOAD                                  (*Load reference from array *)
   | LDC of string                           (*Load constant string onto stack *)
   | LDCLASS of string                       (*Load class onto stack (className) *)
@@ -40,8 +42,9 @@ type code =
   | GOTO of int                             (*Unconditional branch *)
   | LAB of int                              (*Declare label *)
   | GETBOOL                                 (*Get the java boolean stored within a rt/Boolean *)
+  | ANEWARRAY                               (*Create array of rt/Object *)
   | SEQ of code list
-  | NOP                                           (*Null operation*)
+  | NOP                                     (*Null operation*)
 
 
 val output : code -> unit

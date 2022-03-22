@@ -4,7 +4,7 @@ public class Object {
 
     public Object(){
     }
-    //Add a does not understand here]
+    //Add a does not understand here
     public void print () {
         System.out.print(this);
     }
@@ -12,6 +12,7 @@ public class Object {
         System.out.println(this);
     }
 
+    //Create a String of the object
     public rt.String makeString() {
         return new rt.String(this.toString());
     }

@@ -7,14 +7,6 @@ public class String extends rt.Object {
         value = s;
     }
 
-    public String(rt.Integer x) {
-        value = "" + x.value;
-    }
-
-    public String(rt.Char c) {
-        value = "" + c.value;
-    }
-
     @Override
     public void print() {
         System.out.print(value);

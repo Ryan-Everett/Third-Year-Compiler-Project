@@ -19,10 +19,12 @@ type code =
   | INITBOOL                                (*Initialise rt/Boolean*)
   | INITCHAR                                (*Initialise rt/Char*)
   | INITSTRING                              (*Initialise rt/String*)
+  | INITARRAY                               (*Initialise rt/Array*)
   | SLIMIT of int                           (*Limit stack size to n (CHECK THIS) *)
   | LLIMIT of int                           (*Limit local size to n (CHECK THIS) *)
   | ASTORE of int                           (*Store reference into local variable (location) *)
   | ALOAD of int                            (*Load reference from local variable (location) *)
+  | AASTORE                                 (*Store into reference array*)
   | AALOAD                                  (*Load reference from array *)
   | LDC of string                           (*Load constant string onto stack *)
   | LDCLASS of string                       (*Load class onto stack (className) *)
@@ -43,6 +45,7 @@ type code =
   | GOTO of int                             (*Unconditional branch *)
   | LAB of int                              (*Declare label *)
   | GETBOOL                                 (*Get the java boolean stored within a rt/Boolean *)
+  | ANEWARRAY                               (*Create array of rt/Object *)
   | SEQ of code list
   | NOP                                     (*Null operation*)
 
@@ -84,10 +87,12 @@ let rec fInst =
         | INITBOOL ->                   fStr "invokespecial Method rt/Boolean <init> (Z)V"
         | INITCHAR ->                   fStr "invokespecial Method rt/Char <init> (C)V"
         | INITSTRING ->                 fStr "invokespecial Method rt/String <init> (Ljava/lang/String;)V"
+        | INITARRAY ->                  fStr "invokespecial Method rt/Array <init> ([Lrt/Object;)V"
         | SLIMIT x ->                   fMeta ".limit stack $" [fNum x]
         | LLIMIT x ->                   fMeta ".limit locals $" [fNum x]
         | ASTORE x ->                   fMeta "astore $" [fNum x]
         | ALOAD x ->                    fMeta "aload $" [fNum x]
+        | AASTORE ->                    fStr "aastore"
         | AALOAD ->                     fStr "aaload"
         | LDC n ->                      fMeta "ldc \"$\"" [fStr n]
         | LDCLASS c ->                  fMeta "ldc Class \"$\"" [fStr c]
@@ -108,6 +113,7 @@ let rec fInst =
         | GOTO x ->                     fMeta "goto L$" [fNum x]
         | LAB x ->                      fMeta "L$:"     [fNum x]
         | GETBOOL ->                    fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:$get$' (Ljava/lang/Object;)Z"
+        | ANEWARRAY ->                  fStr "anewarray \"rt/Object\""
         | SEQ l ->                      fMeta "$\nSEQ" [fInst(List.hd l)]
         | NOP ->                        fStr""
         | _ ->                          fStr"NO INSTRUCTION FOUND"

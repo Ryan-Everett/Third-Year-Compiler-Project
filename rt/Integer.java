@@ -24,7 +24,7 @@ public class Integer extends rt.Object{
     
     @Override
     public String makeString() {
-        return new rt.String(this);
+        return new rt.String("" + value);
     }
 
     public int $get$(){

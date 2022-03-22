@@ -1,0 +1,17 @@
+Object subclass: ArrayTest category: examples vars: arr(
+        init 
+        | i |
+        (
+            self make
+        )
+        make | i| (
+            "" println;
+            arr = #("This" " is an " 'A' "rray of length " (4+1));
+            i = 0;
+            i < (arr length) whileTrue: [
+                (arr at: i) print;
+                i = i + 1;
+            ];
+            "" println;
+        )
+    )
