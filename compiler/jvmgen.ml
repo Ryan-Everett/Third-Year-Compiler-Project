@@ -27,8 +27,10 @@ let rec gen_expr c e =
         SEQ [NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
     | String x ->
         SEQ [NEW "rt/String"; DUP; LDC x; INITSTRING]
-    | Array es ->
-        SEQ [NEW "rt/Array"; DUP;ICONST (List.length es); ANEWARRAY; gen_array_innards c es; INITARRAY]
+    | Array e ->
+        SEQ [NEW "rt/Array"; DUP; gen_expr c e; INITARRAY ]
+    | ExplicitArray es ->
+        SEQ [NEW "rt/Array"; DUP;ICONST (List.length es); ANEWARRAY; gen_array_innards c es; INITARRAYEXPLICIT]
     | _ -> SEQ[]
 
 and gen_num x = 

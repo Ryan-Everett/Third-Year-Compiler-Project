@@ -18,6 +18,7 @@ type code =
   | INITCHAR                                (*Initialise rt/Char*)
   | INITSTRING                              (*Initialise rt/String*)
   | INITARRAY                               (*Initialise rt/Array*)
+  | INITARRAYEXPLICIT                       (*Initialise explicit rt/Array*)
   | SLIMIT of int                           (*Limit stack size to n (CHECK THIS) *)
   | LLIMIT of int                           (*Limit local size to n (CHECK THIS) *)
   | ASTORE of int                           (*Store reference into local variable (location) *)

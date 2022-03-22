@@ -20,6 +20,7 @@ type code =
   | INITCHAR                                (*Initialise rt/Char*)
   | INITSTRING                              (*Initialise rt/String*)
   | INITARRAY                               (*Initialise rt/Array*)
+  | INITARRAYEXPLICIT                       (*Initialise explicit rt/Array*)
   | SLIMIT of int                           (*Limit stack size to n (CHECK THIS) *)
   | LLIMIT of int                           (*Limit local size to n (CHECK THIS) *)
   | ASTORE of int                           (*Store reference into local variable (location) *)
@@ -87,7 +88,8 @@ let rec fInst =
         | INITBOOL ->                   fStr "invokespecial Method rt/Boolean <init> (Z)V"
         | INITCHAR ->                   fStr "invokespecial Method rt/Char <init> (C)V"
         | INITSTRING ->                 fStr "invokespecial Method rt/String <init> (Ljava/lang/String;)V"
-        | INITARRAY ->                  fStr "invokespecial Method rt/Array <init> ([Lrt/Object;)V"
+        | INITARRAY ->                  fStr "invokespecial Method rt/Array <init> (Lrt/Integer;)V"
+        | INITARRAYEXPLICIT ->          fStr "invokespecial Method rt/Array <init> ([Lrt/Object;)V"
         | SLIMIT x ->                   fMeta ".limit stack $" [fNum x]
         | LLIMIT x ->                   fMeta ".limit locals $" [fNum x]
         | ASTORE x ->                   fMeta "astore $" [fNum x]

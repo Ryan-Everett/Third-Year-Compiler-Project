@@ -67,7 +67,9 @@ let rec check_expr e env =
         ()
     | String (x) ->
         ()
-    | Array es ->
+    | Array e ->
+        check_expr e env;
+    | ExplicitArray es ->
         List.iter (fun e -> check_expr e env) es
     | Char (x) ->
         ()

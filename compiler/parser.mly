@@ -9,8 +9,8 @@ open Dict
 %token <string>         STRING
 %token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE WHILETRUE
 %token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR
-%token                  SEMI ASSIGN LPAR RPAR LBAR RBAR TRUE FALSE INIT NEW RETURN 
-%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT IFTRUE ELSE MOD HASH
+%token                  SEMI ASSIGN LPAR RPAR LBAR RBAR TRUE FALSE INIT NEW NEWWITHARG RETURN 
+%token                  AND OR NOT LT LEQ EQ NEQ GEQ GT IFTRUE ELSE MOD HASH ARRAY
                   
 %type <Tree.classDecls>  file
 
@@ -106,8 +106,9 @@ expr :
 
 exprA:
       exprB                               { $1 }
-    | exprB params                        { MessageSend (makeMessageSend $1 $2)};
+    | exprB params                        { MessageSend (makeMessageSend $1 $2)}
     | exprB IDENT                         { MessageSend (makeMessageSend $1 [makeParam $2 (None)]) }
+    | ARRAY NEWWITHARG exprB              { Array $3}
 
 exprB:
       exprC                               { $1 }
@@ -122,7 +123,7 @@ exprC :
     | exprC TIMES exprD                   { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
     | exprC DIVIDE exprD                  { MessageSend (makeMessageSend $1 [makeParam "div$" (Some($3))]) }
     | exprC AND exprD                     { MessageSend (makeMessageSend $1 [makeParam "and$" (Some($3))]) }
-    | IDENT NEW                           { InitSend ($1)}; 
+    | IDENT NEW                           { InitSend ($1)};
 
 exprD :
       exprE                               { $1 }
@@ -141,7 +142,7 @@ exprE :
 
 variable :
     | name                                { Variable ($1) }
-    | HASH LPAR expr_list RPAR            { Array ($3) }
+    | HASH LPAR expr_list RPAR            { ExplicitArray ($3) }
     | NUMBER                              { Number ($1) }
     | CHAR                                { Char ($1) }
     | STRING                              { String ($1) }

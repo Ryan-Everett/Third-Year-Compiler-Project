@@ -3,6 +3,11 @@ package rt;
 public class Array extends rt.Object{
     final rt.Object [] value;
     final rt.Integer length;
+
+    public Array (rt.Integer x) {
+        value = new Object[x.value] ;
+        length = new rt.Integer(x.value);
+    }
     public Array (rt.Object [] os) {
         value = os;
         length = new rt.Integer(os.length);
@@ -20,9 +25,12 @@ public class Array extends rt.Object{
     public rt.Integer length(){
         return length;
     }
-
     public rt.Object at$ (rt.Integer x){
         return value[x.value];
+    }
+    public rt.Array at$put$ (rt.Integer i, rt.Object x){    //Note that this edits the current array instead of making a new one
+        value[i.value] = x;
+        return this;
     }
 }
 
