@@ -1,4 +1,4 @@
-Object subclass: ArrayTest category: examples vars: arr(
+Object subclass: ArrayTest category: examples vars: arr revArr(
         init 
         | i |
         (
@@ -7,9 +7,17 @@ Object subclass: ArrayTest category: examples vars: arr(
         make | i| (
             "" println;
             arr = #("This" " is an " 'A' "rray of length " (4+1));
+            revArr = Array new: 5;
             i = 0;
             i < (arr length) whileTrue: [
                 (arr at: i) print;
+                revArr at: (4-i) put: (arr at: i);
+                i = i + 1;
+            ];
+            i = 0;
+            "" println;
+            i < (arr length) whileTrue: [
+                (revArr at: i) print;
                 i = i + 1;
             ];
             "" println;
