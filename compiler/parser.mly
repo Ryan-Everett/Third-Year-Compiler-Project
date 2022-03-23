@@ -2,7 +2,7 @@
 open Tree
 open Dict
 %}
-%token <Dict.ident>     IDENT MESSAGE BVAR
+%token <Dict.ident>     IDENT GLOBIDENT PATHEDGLOBIDENT MESSAGE BVAR
 %token <int>            NUMBER
 %token <float>
 %token <char>           CHAR          
@@ -26,18 +26,26 @@ class_decls :
     | class_decl class_decls              { $1 :: $2 };  
 
 class_decl :
-      IDENT SUBCLASS IDENT CATEGORY IDENT LPAR message_decls RPAR
+      glob_ident SUBCLASS GLOBIDENT CATEGORY IDENT LPAR message_decls RPAR
                                           { makeClass $1 $3 $5 [] $7 }
-    | IDENT SUBCLASS IDENT CATEGORY IDENT  var_names LPAR message_decls RPAR
+    | glob_ident SUBCLASS GLOBIDENT CATEGORY IDENT var_names LPAR message_decls RPAR
                                           { makeClass $1 $3 $5 $6 $8 };
 
 var_names:
-      VARNAMES                            { [] };
-    | VARNAMES idents                     { $2 };
+      VARNAMES                            { [] }
+    | VARNAMES var_idents                 { $2 };
 
-idents :
-      IDENT                               { [$1] }
-    | IDENT idents                        { $1 :: $2 };
+var_idents :
+      var_ident                           { [$1] }
+    | var_ident var_idents                { $1 :: $2 };
+
+var_ident :
+      IDENT                               { $1 }
+    | GLOBIDENT                           { $1 };
+
+glob_ident :
+      GLOBIDENT                           { $1 }
+    | PATHEDGLOBIDENT                     { $1 };
 
 message_decls :
       message_decl                        { [$1] }
@@ -90,7 +98,7 @@ stmt :
     | variable EQUAL expr                 { Assign ($1, $3)}
     | exprB params                        { MessageSendVoid (makeMessageSend $1 $2)}
     | exprB IDENT                         { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
-    | IDENT NEW                           { InitSendVoid ($1)}
+    | glob_ident NEW                      { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
     | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeBranch $1 $4)}
     | expr IFTRUE LBAR stmts RBAR         { ExplicitIfTrue (makeBranch $1 $4)}
@@ -123,7 +131,7 @@ exprC :
     | exprC TIMES exprD                   { MessageSend (makeMessageSend $1 [makeParam "mult$" (Some($3))]) }
     | exprC DIVIDE exprD                  { MessageSend (makeMessageSend $1 [makeParam "div$" (Some($3))]) }
     | exprC AND exprD                     { MessageSend (makeMessageSend $1 [makeParam "and$" (Some($3))]) }
-    | IDENT NEW                           { InitSend ($1)};
+    | glob_ident NEW                      { InitSend ($1)};
 
 exprD :
       exprE                               { $1 }
@@ -150,4 +158,5 @@ variable :
     | FALSE                               { Boolean(0) };
 
 name :  
-    IDENT                                 { makeName $1 !Lexer.currLine } ;
+      IDENT                               { makeName $1 !Lexer.currLine }
+    | glob_ident                          { makeName $1 !Lexer.currLine };

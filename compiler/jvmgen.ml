@@ -14,7 +14,8 @@ let rec gen_expr c e =
       (match x.x_def with 
         Some d -> 
           (match d.d_kind with 
-              VarDef -> SEQ [ALOAD 0; GETFIELD ("rt/"^c.c_category^"/"^c.c_name, x.x_name)]
+              InstanceVarDef -> SEQ [ALOAD 0; GETFIELD ("rt/"^c.c_category^"/"^c.c_name, x.x_name)]
+            | ClassVarDef -> SEQ [GETSTATIC ("rt/"^c.c_category^"/"^c.c_name, x.x_name)]
             | LocalDef -> SEQ [ALOAD d.d_off]
           )
       )
@@ -58,9 +59,10 @@ and gen_stmt c s =
         (match x.x_def with 
           Some d -> 
             (match d.d_kind with 
-                VarDef ->
-                  SEQ[ ALOAD 0; gen_expr c e2;
-                       PUTFIELD("rt/"^c.c_category^"/"^c.c_name, x.x_name) ]
+                InstanceVarDef ->
+                  SEQ[ ALOAD 0; gen_expr c e2; PUTFIELD("rt/"^c.c_category^"/"^c.c_name, x.x_name) ]
+                | ClassVarDef -> 
+                  SEQ [ gen_expr c e2; PUTSTATIC("rt/"^c.c_category^"/"^c.c_name, x.x_name)]
               | LocalDef -> 
                   SEQ [gen_expr c e2; ASTORE d.d_off]
           )
@@ -97,7 +99,8 @@ let gen_message_decl c m =
           gen_stmt c m.m_body; ALOAD 0; ARETURN; ENDMETHOD]
 
 let gen_var_decl vName =
-  SEQ [FIELD vName]
+  if vName.[0] <= 'Z' then SEQ [STATFIELD vName]
+  else SEQ [FIELD vName]
 
 let gen_class c =
   let fullClassName = "rt/" ^c.c_category ^ "/" ^ c.c_name in

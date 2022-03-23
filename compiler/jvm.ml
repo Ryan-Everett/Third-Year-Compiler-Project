@@ -7,6 +7,7 @@ type code =
   | SUPER of string                         (*Name of super "superCategory/super" *)
   | DECLARECONSTS                           (*Declare some Krakatau constants to make j file more readable *)
   | FIELD of string                         (*Variable decl with name *)
+  | STATFIELD of string                     (*Static variable decl with name *)
   | SMALLINTS                               (*Get the array of pre-loaded integers*)
   | INITSIG                                 (*Constructor signature *)
   | METHODSIG of string * int               (*Method signature (name, numArgs) *)
@@ -35,7 +36,9 @@ type code =
 (*| PGET of string                          (*Get method with [Target object, method name] on stack *)*)
   | PCALL of string * int                   (*Call method on object [target object, args] on stack (methodID, numArgs)*)
   | GETFIELD of string * string             (*Get instance variable (class, varName) *)
+  | GETSTATIC of string * string            (*Get class variable (class, varName) *)
   | PUTFIELD of string * string             (*Write value on stack head to instance variable (class, varName) *)
+  | PUTSTATIC of string * string            (*Write value on stack head to class variable (class, varName) *)
   | POP                                     (*Pop head of stack *)
   | RETURN                                  (*Return from method *)
   | ARETURN                                 (*Return reference from method *)
@@ -76,6 +79,7 @@ let rec fInst =
         | SUPER n ->                    fMeta ".super \"$\"" [fStr n]
         | DECLARECONSTS ->              fMeta ".const [getstatcls] = $\n.const [dynmeth] = $" [getstatclass; dynmeth]
         | FIELD n ->                    fMeta ".field private \"$\" Lrt/Object;" [fStr n]
+        | STATFIELD n ->                fMeta ".field private static \"$\" Lrt/Object;" [fStr n]
         | SMALLINTS ->                  fStr "getstatic Field rt/Integer smallInts [Lrt/Integer;"
         | INITSIG ->                    fStr  ".method public <init> : ()V"
         | METHODSIG (n, x) ->           fMeta ".method public \"$\" : ($)Lrt/Object;" [fStr n; fStr(repeatStr x "Lrt/Object;")]
@@ -104,7 +108,9 @@ let rec fInst =
       (*| PGET n->                      fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod:$' (Ljava/lang/Object;)Ljava/lang/Object;" [fStr n] *)
         | PCALL (n, x) ->               fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:$' (Ljava/lang/Object;$)Lrt/Object;" [ fStr n; fStr(repeatStr x "Lrt/Object;")]
         | GETFIELD (c, n) ->            fMeta "getfield Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
+        | GETSTATIC (c, n) ->           fMeta "getstatic Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
         | PUTFIELD (c, n) ->            fMeta "putfield Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
+        | PUTSTATIC (c, n) ->           fMeta "putstatic Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
         | POP ->                        fStr "pop"
         | RETURN ->                     fStr "return"
         | ARETURN ->                    fStr "areturn"

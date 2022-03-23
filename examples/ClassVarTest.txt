@@ -1,0 +1,14 @@
+Object subclass: ClassVarTest 
+    category: examples
+    vars: a Shared
+    (
+        init (
+            Shared = 0;
+        )
+        incrShared (
+            Shared = Shared + 1;
+        )
+        printShared (
+            "Shared value = " ++ Shared println;
+        )
+    )

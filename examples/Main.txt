@@ -1,7 +1,7 @@
 Object subclass: Main
     category: examples
     (
-        init | x y| (
+        init | x y | (
             y = examples/IntTests new; x = examples/SavingsAccount new;
             y = 20;
             x deposit: y;
@@ -16,6 +16,11 @@ Object subclass: Main
             x = examples/LoopTest new;
             x = examples/BranchTest new;
             x = examples/ArrayTest new;
+            x = examples/ClassVarTest new;
+            y = examples/ClassVarTest new;
+            y printShared;
+            x incrShared;
+            y printShared;
             "Test complete!" println;
         )
     )

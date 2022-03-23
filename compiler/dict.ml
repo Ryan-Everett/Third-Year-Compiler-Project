@@ -17,7 +17,8 @@ type def =
     d_off : int }               (* Offset if local *)
 
 and def_kind =
-    VarDef                      (* Variable *)
+    InstanceVarDef              (* Instance Variable *)
+  | ClassVarDef                 (* Class Variable*)
   | LocalDef
 
 type lab_set =

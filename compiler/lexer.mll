@@ -18,15 +18,30 @@ let kwtable =
 (* |idtable| -- table of all identifiers seen so far *)
 let idtable = Hashtbl.create 64
 
-(* |lookup| -- convert string to keyword or identifier *)
-let lookup s = 
+(* |simple_up_lookup| -- convert capital-starting string to keyword or identifier *)
+let simple_up_lookup s = 
+  try Hashtbl.find kwtable s with 
+    Not_found -> 
+      Hashtbl.replace idtable s ();
+      GLOBIDENT s
+
+(* |up_lookup| -- convert capital-starting string with a path to keyword or identifier *)
+let up_lookup s = 
+  try Hashtbl.find kwtable s with 
+    Not_found -> 
+      Hashtbl.replace idtable s ();
+      PATHEDGLOBIDENT s
+
+(* |up_lookup| -- convert non-capital-starting string to keyword or identifier *)
+let low_lookup s = 
   try Hashtbl.find kwtable s with 
     Not_found -> 
       Hashtbl.replace idtable s ();
       IDENT s
 
+
 (* |message_lookup| -- convert string to message *)
-let messagelookup s =
+let message_lookup s =
   let m = s ^ "$" in
     try Hashtbl.find kwtable m with 
       Not_found -> 
@@ -51,6 +66,7 @@ let currLine = ref 1
 
 let letter = ['A'-'Z''a'-'z']
 let up_letter = ['A'-'Z']
+let low_letter = ['a' - 'z']
 let digit = ['0'-'9']
 
 let q = '\''
@@ -58,11 +74,15 @@ let qq = '"'
 let char1 = [^'\'']
 let char2 = [^'"']
 rule token = 
-  parse 
-    | letter (letter | digit | '_' | '/')* as s
-                        { lookup s }
+  parse
+    | up_letter (letter | digit | '_')* as s
+                        { simple_up_lookup s} (*Global names with no path, eg Colour *)
+    | (((letter | digit | '_')+ '/')+ (up_letter (letter | digit | '_')*)) as s
+                        { up_lookup s } (*Global names involving a path. eg examples/Main*)
+    | low_letter (letter | digit | '_')* as s
+                        { low_lookup s }
     | (letter (letter | digit | '_')* as s)":"
-                        { messagelookup s }
+                        { message_lookup s }
     | ":"(letter (letter | digit | '_')* as s)
                         { block_var_lookup s}
     | digit+ as s

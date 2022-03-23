@@ -28,9 +28,15 @@ let sem_error fmt args =
     try define d env with 
       Exit -> sem_error "$ is already declared" [fStr d.d_tag]
 
-(* |declare_field| -- declare an instance variable *)
-let declare_field x off env =
-  let d = { d_tag = x; d_kind = VarDef; d_level = 0;
+(* |declare_inst_var| -- declare an instance variable *)
+let declare_inst_var x off env =
+  let d = { d_tag = x; d_kind = InstanceVarDef; d_level = 0;
+            d_lab = ""; d_off = off } in
+  add_def d env
+
+(* |declare_class_var| -- declare a class variable *)
+let declare_class_var x off env =
+  let d = { d_tag = x; d_kind = ClassVarDef; d_level = 0;
             d_lab = ""; d_off = off } in
   add_def d env
 
@@ -43,7 +49,8 @@ let declare_local x off env =
 (* |has_value| -- check if object is suitable for use in expressions *)
   let has_value d = 
     match d.d_kind with
-        VarDef -> true 
+        InstanceVarDef -> true 
+      | ClassVarDef -> true
       | LocalDef -> true
       | _ -> false
 
@@ -57,7 +64,7 @@ let rec accum f xs a =
 let lookup_def x env =
   err_line := x.x_line;
   try let d = lookup x.x_name env in x.x_def <- Some d; d with 
-    Not_found -> sem_error "$ is not declared" [fStr x.x_name] 
+    Not_found -> sem_error "$ is not declared" [fStr x.x_name]
 
 let rec check_expr e env =
   match e with
@@ -75,8 +82,7 @@ let rec check_expr e env =
         ()
     | Variable (x) ->
         let d = lookup_def x env in
-          if not (has_value d) then
-             sem_error "$ is not a variable" [fStr x.x_name]
+          if not (has_value d) then sem_error "$ is not a variable" [fStr x.x_name]
     | MessageSend s ->
         check_expr s.s_target env; check_params s.s_params env
     | InitSend s ->
@@ -145,7 +151,8 @@ let check_var_decls vds env0 =
     match ds with
         [] -> env
       | h::tail ->
-          loop tail (n+1) (declare_field h n env)
+          if Char.code(h.[0]) <= Char.code('Z') then loop tail (n+1) (declare_class_var h n env)
+          else loop tail (n+1) (declare_inst_var h n env)
       in loop vds 1 env0
 
 let init_env = declare_local "self" 0 empty
