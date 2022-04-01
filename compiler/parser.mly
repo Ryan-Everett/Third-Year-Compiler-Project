@@ -14,7 +14,7 @@ open Dict
                   
 %type <Tree.classDecls>  file
 
-%start                  file
+%start                   file
 
 %%
 
@@ -105,10 +105,6 @@ stmt :
     | expr IFTRUE LBAR stmts RBAR ELSE LBAR stmts RBAR
                                           { ExplicitIfTrueElse (makeIfElse $1 $4 $8)};
 
-expr_list :
-      expr                                { [$1] }
-    | expr expr_list                      { $1 :: $2 };
-
 expr :
       exprA                               { $1}
 
@@ -150,12 +146,16 @@ exprE :
 
 variable :
     | name                                { Variable ($1) }
-    | HASH LPAR expr_list RPAR            { ExplicitArray ($3) }
+    | HASH LPAR exprE_list RPAR           { ExplicitArray ($3) }
     | NUMBER                              { Number ($1) }
     | CHAR                                { Char ($1) }
     | STRING                              { String ($1) }
     | TRUE                                { Boolean(1) }
     | FALSE                               { Boolean(0) };
+
+exprE_list :
+      exprE                               { [$1] }
+    | exprE exprE_list                    { $1 :: $2 };
 
 name :  
       IDENT                               { makeName $1 !Lexer.currLine }
