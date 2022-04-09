@@ -9,7 +9,7 @@ let rec gen_expr c e =
       MessageSend s -> 
         SEQ[gen_expr c s.s_target; gen_params c s.s_params; PCALL (s.s_full_name, s.s_arg_count)]
     | InitSend s -> 
-        SEQ [LDCLASS ("rt/"^s); GETMETA; DYNINIT]
+        SEQ [NEW("rt/"^s); DUP; INIT("rt/"^s)]
     | Variable x -> 
       (match x.x_def with 
         Some d -> 
@@ -70,7 +70,7 @@ and gen_stmt c s =
     | MessageSendVoid s -> 
         SEQ[gen_expr c s.s_target; gen_params c s.s_params; PCALL (s.s_full_name, s.s_arg_count); POP]
     | InitSendVoid s -> 
-        SEQ [LDCLASS ("rt/"^s); GETMETA; DYNINIT; POP]
+        SEQ [NEW("rt/"^s); DUP; INIT("rt/"^s); POP]
     | ExplicitWhileTrue s ->
       (match s.l_lab_set with
         Some l ->
