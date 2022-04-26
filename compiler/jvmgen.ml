@@ -10,6 +10,8 @@ let rec gen_expr c e =
         SEQ[gen_expr c s.s_target; gen_params c s.s_params; PCALL (s.s_full_name, s.s_arg_count)]
     | InitSend s -> 
         SEQ [NEW("rt/"^s); DUP; INIT("rt/"^s)]
+    | Perform (e1, e2) ->
+        SEQ[gen_expr c e1; gen_expr c e2; PCALL ("makeString", 0); GETSTRINGCALL; PGET;gen_expr c e1; CALL 1;]
     | Variable x -> 
       (match x.x_def with 
         Some d -> 
@@ -88,7 +90,6 @@ and gen_stmt c s =
         Some l ->
           SEQ [gen_expr c s.ie_cond; GETBOOL; IFEQ l.l_lab1; gen_stmt c s.ie_ifStmt; GOTO l.l_lab2; LAB l.l_lab1; gen_stmt c s.ie_elseStmt; LAB l.l_lab2; ]
           )
-
     | Return e -> 
         SEQ [gen_expr c e; ARETURN;]
 
