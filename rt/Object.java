@@ -4,7 +4,11 @@ public class Object {
 
     public Object(){
     }
-    //Add a does not understand here
+
+    public rt.Object doesNotUnderstand$(rt.Object s){
+        throw(new MessageNotUnderstood("MESSAGE \"" + ((rt.String) s).value + "\" NOT UNDERSTOOD"));
+    }
+
     public void print () {
         System.out.print(this);
     }
@@ -27,4 +31,5 @@ public class Object {
     public rt.Boolean neq$(rt.Object o) {
         return new rt.Boolean(!this.equals(o));
     }
+
 }

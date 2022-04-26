@@ -24,6 +24,7 @@ compile:
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
 		javac -cp classes:dependancies/dynalink-0.7.jar rt/* -d classes
+		javac -cp classes:"dependancies/*":. dependancies/*.java -d classes
 
 genStackMaps: 
 	$(foreach file, $(wildcard $(CLASSDIR)/*), java $(RUNFLAGS):. utilities/GenStackMaps $(file);)
@@ -31,6 +32,8 @@ genStackMaps:
 runMain:
 	java $(RUNFLAGS):. rt.examples.ExampleTester
 
+runDNE:
+	java $(RUNFLAGS):. rt.examples.DNETester
 clean:
 		$(MAKE) -C compiler/lib clean
 		$(MAKE) -C compiler clean

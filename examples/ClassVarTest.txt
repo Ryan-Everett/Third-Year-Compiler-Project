@@ -1,7 +1,6 @@
 Object subclass: ClassVarTest 
     category: examples
-    vars: a Shared
-    (
+    vars: a Shared (
         init (
             Shared = 0;
         )
@@ -11,4 +10,4 @@ Object subclass: ClassVarTest
         printShared (
             "Shared value = " ++ Shared println;
         )
-    )
+)

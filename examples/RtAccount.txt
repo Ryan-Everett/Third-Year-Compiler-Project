@@ -1,7 +1,6 @@
-Object subclass: RtAccount
+Object subclass: RtAccount 
     category: examples
-    vars: id balance
-    (
+    vars: id balance (
         init (
             balance = 0;
         )
@@ -20,4 +19,4 @@ Object subclass: RtAccount
         balance (
             ^balance
         )
-    )
+)

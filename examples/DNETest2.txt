@@ -1,0 +1,6 @@
+Object subclass: DNETest2 
+    category: examples(
+        init |i|(
+            self nonexistent: "Hi" method: 2
+        )
+)

@@ -1,6 +1,5 @@
 Object subclass: BranchTest
-    category: examples
-    (
+    category: examples(
         init (
             self makeLoop;
         )
@@ -9,4 +8,4 @@ Object subclass: BranchTest
             "Loop Starting" println;
             i < 10 whileTrue: [i print; ", " print; i = i + 1; ];
         )
-    )
+)

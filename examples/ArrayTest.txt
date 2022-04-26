@@ -1,5 +1,5 @@
-Object subclass: ArrayTest category: examples vars: arr revArr(
-        init 
+Object subclass: ArrayTest category: examples vars: arr revArr (
+        init
         | i |
         (
             self make
@@ -22,4 +22,4 @@ Object subclass: ArrayTest category: examples vars: arr revArr(
             ];
             "" println;
         )
-    )
+)

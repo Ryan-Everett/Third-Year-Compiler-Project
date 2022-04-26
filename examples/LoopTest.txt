@@ -1,13 +1,12 @@
-Object subclass: LoopTest
-    category: examples
-    (
+Object subclass: LoopTest 
+    category: examples (
         init (
-            self makeLoop;
+            self makeLoop: 6;
         )
-        makeLoop |i| (
+        makeLoop: n |i| (
             i = 0;
             "Loop Starting" println;
-            i < 20 whileTrue: [
+            i < n whileTrue: [
                 (i % 2) == 0 ifTrue: [
                     i ++ ", " print;
                 ]
@@ -15,4 +14,4 @@ Object subclass: LoopTest
                 i = i + 1; 
             ];
         )
-    )
+)

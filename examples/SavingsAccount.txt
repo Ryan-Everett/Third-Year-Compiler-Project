@@ -1,7 +1,6 @@
-examples/RtAccount subclass: SavingsAccount
-    category: examples
-    vars: interestRate
-    (
+examples/RtAccount subclass: SavingsAccount 
+    category: examples 
+    vars: interestRate (
         init (
             interestRate = 1;
         )
@@ -11,4 +10,4 @@ examples/RtAccount subclass: SavingsAccount
         applyInterest (
             self deposit: ((self balance) * interestRate)
         )
-    )
+)

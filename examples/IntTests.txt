@@ -1,19 +1,20 @@
-Object subclass: IntTests
+Object subclass: IntTests 
     category: examples
-    vars: v
-    (
+    vars: v (
         init (
             v = 7;
-            self localTest;
+            self localTest: "Param";
             v = v * 3 - -7 * 2;
             v println;
             (self add1: 2) println
         )
 
-        localTest 
+        localTest: param
         |x y z a b c d e f g h i j k l m n o p q r s|
         (
+            param println;
             s = "Local s";
+            param = s;
             s println;
             v println
         )
@@ -22,4 +23,4 @@ Object subclass: IntTests
             x = x + 1;
             ^x
         )
-    )
+)

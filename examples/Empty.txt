@@ -1,7 +1,6 @@
-Object subclass: Empty
-    category: examples
-    (
+Object subclass: Empty 
+    category: examples(
         init (
 
         )
-    )
+)

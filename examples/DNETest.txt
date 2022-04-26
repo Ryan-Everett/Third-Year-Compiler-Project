@@ -1,0 +1,11 @@
+Object subclass: DNETest 
+    category: examples (
+        init (
+            self nonexistent: "Hi";
+            examples/DNETest2 new;
+        )
+        
+        doesNotUnderstand: x (
+            (x ++ " Caught!") println
+        )
+)
