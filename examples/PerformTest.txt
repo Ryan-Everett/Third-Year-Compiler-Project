@@ -1,0 +1,24 @@
+Object subclass: Performer
+    category: examples vars: a b(
+
+    init |i|(
+        i = 0;
+        a = "foo";
+        b = "bar";
+        (i < 3) whileTrue: [
+            self perform: a;
+            a = a ++ b;
+            i = i + 1;
+        ]
+    )
+
+    foo (
+        "foo" print
+    )
+    foobar (
+        ", foobar" print
+    )
+    foobarbar (
+        ", foobarbar" println
+    )
+)

@@ -7,6 +7,11 @@ public class String extends rt.Object {
         value = s;
     }
 
+    //Uncallable in my language due to prepended $, used only for perform
+    public java.lang.String $getStringForPerform$() {
+        return value;
+    }
+
     @Override
     public void print() {
         System.out.print(value);

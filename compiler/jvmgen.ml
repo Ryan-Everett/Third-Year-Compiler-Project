@@ -71,6 +71,8 @@ and gen_stmt c s =
         SEQ[gen_expr c s.s_target; gen_params c s.s_params; PCALL (s.s_full_name, s.s_arg_count); POP]
     | InitSendVoid s -> 
         SEQ [NEW("rt/"^s); DUP; INIT("rt/"^s); POP]
+    | PerformVoid (e1, e2) ->
+        SEQ[gen_expr c e1; gen_expr c e2; PCALL ("makeString", 0); GETSTRINGCALL; PGET;gen_expr c e1; CALL 1; POP]
     | ExplicitWhileTrue s ->
       (match s.l_lab_set with
         Some l ->

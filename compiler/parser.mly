@@ -8,7 +8,7 @@ open Dict
 %token <char>           CHAR          
 %token <string>         STRING
 %token                  SUBCLASS CATEGORY VARNAMES PLUS MINUS TIMES DIVIDE WHILETRUE
-%token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR
+%token                  TIMES DIVIDE OPEN CLOSE EQUAL EOF BADTOK CONCAT BAR PERFORM
 %token                  SEMI ASSIGN LPAR RPAR LBAR RBAR TRUE FALSE INIT NEW NEWWITHARG RETURN 
 %token                  AND OR NOT LT LEQ EQ NEQ GEQ GT IFTRUE ELSE MOD HASH ARRAY
                   
@@ -98,6 +98,7 @@ stmt :
     | variable EQUAL expr                 { Assign ($1, $3)}
     | exprB params                        { MessageSendVoid (makeMessageSend $1 $2)}
     | exprB IDENT                         { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
+    | exprB PERFORM exprE                 { PerformVoid ($1, $3) }
     | glob_ident NEW                      { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
     | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeBranch $1 $4)}
@@ -111,6 +112,7 @@ expr :
 exprA:
       exprB                               { $1 }
     | exprB params                        { MessageSend (makeMessageSend $1 $2)}
+    | exprB PERFORM exprE                 { Perform ($1, $3) }
     | exprB IDENT                         { MessageSend (makeMessageSend $1 [makeParam $2 (None)]) }
     | ARRAY NEWWITHARG exprB              { Array $3}
 

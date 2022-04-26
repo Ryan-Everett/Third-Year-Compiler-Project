@@ -68,6 +68,7 @@ and stmt =
   | ExplicitIfTrue of branch
   | ExplicitIfTrueElse of ifElse
   | MessageSendVoid of messageSend
+  | PerformVoid of expr * expr
   | InitSendVoid of ident
   | Return of expr
 
@@ -81,6 +82,7 @@ and expr =
     | ExplicitArray of expr list
     | Variable of name          (* Variable (name) *)
     | MessageSend of messageSend
+    | Perform of expr * expr
     | InitSend of ident
 
 

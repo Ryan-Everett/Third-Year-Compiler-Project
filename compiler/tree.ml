@@ -68,20 +68,22 @@ and stmt =
   | ExplicitIfTrue of branch
   | ExplicitIfTrueElse of ifElse
   | MessageSendVoid of messageSend
+  | PerformVoid of expr * expr
   | InitSendVoid of ident
   | Return of expr
 
   
 and expr =
     Number of int             (* Constant (value) *)
-    | Boolean of int          (*0 false, 1 true *)
-    | Char of char
-    | String of string
-    | Array of expr
-    | ExplicitArray of expr list
-    | Variable of name          (* Variable (name) *)
-    | MessageSend of messageSend
-    | InitSend of ident
+  | Boolean of int          (*0 false, 1 true *)
+  | Char of char
+  | String of string
+  | Array of expr
+  | ExplicitArray of expr list
+  | Variable of name          (* Variable (name) *)
+  | MessageSend of messageSend
+  | Perform of expr * expr
+  | InitSend of ident
 
 and op = Plus | Minus | Times | Divide
 

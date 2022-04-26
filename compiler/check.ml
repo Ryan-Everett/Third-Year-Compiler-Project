@@ -85,6 +85,8 @@ let rec check_expr e env =
           if not (has_value d) then sem_error "$ is not a variable" [fStr x.x_name]
     | MessageSend s ->
         check_expr s.s_target env; check_params s.s_params env
+    | Perform (e1, e2) ->
+      check_expr e1 env; check_expr e2 env;
     | InitSend s ->
         ()
 
@@ -110,6 +112,8 @@ let rec check_stmt s env =
         ()
     | MessageSendVoid s-> 
         check_expr s.s_target env; check_params s.s_params env
+    | PerformVoid (e1, e2) ->
+        check_expr e1 env; check_expr e2 env;
     | InitSendVoid c ->
         () (*Maybe check if className is on classpath*)
     | ExplicitWhileTrue l -> 

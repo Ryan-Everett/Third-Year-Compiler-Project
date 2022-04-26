@@ -20,6 +20,7 @@ Object subclass: Main
             y printShared;
             x incrShared;
             y printShared;
+            x = examples/Performer new;
             "Test complete!" println;
         )
 )
