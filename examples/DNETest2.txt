@@ -1,3 +1,4 @@
+`Showing the default doesNotUnderstand`
 Object subclass: DNETest2 
     category: examples(
         init |i|(

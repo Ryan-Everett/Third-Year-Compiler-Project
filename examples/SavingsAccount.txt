@@ -1,3 +1,4 @@
+`Example of a savings account, subclass to the RtAccount`
 examples/RtAccount subclass: SavingsAccount 
     category: examples 
     vars: interestRate (

@@ -1,3 +1,4 @@
+`Some tests invloving ints and parameters`
 Object subclass: IntTests 
     category: examples
     vars: v (

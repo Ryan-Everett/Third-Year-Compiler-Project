@@ -1,3 +1,4 @@
+`Class showing how class variables work `
 Object subclass: ClassVarTest 
     category: examples
     vars: a Shared (

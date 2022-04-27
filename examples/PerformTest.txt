@@ -1,3 +1,4 @@
+`Class showing the perform: method`
 Object subclass: Performer
     category: examples vars: a b(
 

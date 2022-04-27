@@ -117,6 +117,12 @@ rule token =
     | "^"               { RETURN }
     | "|"               { BAR }
     | [' ''\t']+        { token lexbuf }
+    | "`"              { comment lexbuf; token lexbuf }
     | "\n"              { incr currLine; token lexbuf}
+    | _                 { BADTOK}
     | eof               { EOF }
     
+and comment = 
+  parse 
+      "`"              { () }
+    | _                 {comment lexbuf}

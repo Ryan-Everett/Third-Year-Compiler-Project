@@ -1,0 +1,18 @@
+`Class showing some branching `
+Object subclass: BranchTest
+    category: examples (
+        init (
+            self makeLoop: 6;
+        )
+        makeLoop: n |i| (
+            i = 0;
+            "Loop Starting" println;
+            i < n whileTrue: [
+                (i % 2) == 0 ifTrue: [
+                    i ++ ", " print;
+                ]
+                else: ["ODD, " print];
+                i = i + 1; 
+            ];
+        )
+)

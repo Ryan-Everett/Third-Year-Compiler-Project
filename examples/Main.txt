@@ -1,3 +1,4 @@
+`Tester class which creates most of the examples classes`
 Object subclass: Main 
     category: examples (
         init | x y | (

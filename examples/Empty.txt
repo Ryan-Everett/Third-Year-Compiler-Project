@@ -1,3 +1,4 @@
+`Empty class`
 Object subclass: Empty 
     category: examples(
         init (
