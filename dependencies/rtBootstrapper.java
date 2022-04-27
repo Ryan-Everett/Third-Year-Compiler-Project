@@ -1,4 +1,4 @@
-package dependancies;
+package dependencies;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -8,18 +8,7 @@ import org.dynalang.dynalink.*;
 import org.dynalang.dynalink.beans.*;
 import org.dynalang.dynalink.linker.*;
 public class rtBootstrapper {
-    private static final GuardingDynamicLinker dneLinker;
-    private static final DynamicLinker dynamicLinker;
-    static {
-        try{
-            dneLinker = new DoesNotUnderstandLinker();
-        }
-        //Error would only throw if rt.Object does not have a public doesNotUnderstand method
-        catch (NoSuchMethodException | IllegalAccessException e){
-            throw new ExceptionInInitializerError(e);
-        }
-        dynamicLinker = createDynamicLinker();
-    }
+    private static final DynamicLinker dynamicLinker = createDynamicLinker();
 
     //Create the dynamic linker for my language run-time
     //This linker will first consult the BeansLinker, which can link any valid message calls in my objects
@@ -28,7 +17,12 @@ public class rtBootstrapper {
     private static DynamicLinker createDynamicLinker() {
         final DynamicLinkerFactory factory = new DynamicLinkerFactory();
         factory.setPrioritizedLinker(new BeansLinker());
-        factory.setFallbackLinkers(dneLinker);
+        try{
+            factory.setFallbackLinkers(new DoesNotUnderstandLinker());
+        }
+        catch (NoSuchMethodException | IllegalAccessException e){
+            throw new ExceptionInInitializerError(e);
+        }
         return factory.createLinker();
     }
 

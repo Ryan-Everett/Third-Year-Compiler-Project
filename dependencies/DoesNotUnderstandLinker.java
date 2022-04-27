@@ -1,4 +1,4 @@
-package dependancies;
+package dependencies;
 import org.dynalang.dynalink.*;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.MethodHandle;
@@ -43,9 +43,15 @@ public class DoesNotUnderstandLinker implements GuardingDynamicLinker{
         //The DNE Linker can only deal with dyn:callMethod requests
         if(l < 2 || "dyn" != callSiteDescriptor.getNameToken(CallSiteDescriptor.SCHEME)
                  || "callMethod" != callSiteDescriptor.getNameToken(CallSiteDescriptor.OPERATOR)) {
+            System.out.println(callSiteDescriptor.getMethodType().toString());
+            final java.lang.Object receiver = request.getArguments()[1];
+            System.out.println("RECIEVER + " + receiver.getClass());
+            final java.lang.Object callName = request.getCallSiteDescriptor();
+            //System.out.println("CallName + " + callName);
             return null;
         }
         final java.lang.Object receiver = request.getReceiver();
+        System.out.println(receiver.toString());
         //We cannot operate with no receiver
         if(receiver == null) {
             return null;

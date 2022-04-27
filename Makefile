@@ -1,5 +1,5 @@
-DEPENDANCIES = "dependancies/*"
-RUNFLAGS = -cp classes:$(DEPENDANCIES)
+dependencies = "dependencies/*"
+RUNFLAGS = -cp classes:$(dependencies)
 CLASSDIR = ./classes/rt/examples
 all: downloadKrak build compile genStackMaps runMain
 
@@ -17,14 +17,14 @@ build:
 		
 		$(MAKE) -C compiler/lib all
 		$(MAKE) -C compiler all
-		javac -cp classes:"dependancies/*":. utilities/GenStackMaps.java
+		javac -cp classes:"dependencies/*":. utilities/GenStackMaps.java
 
 compile:
 		mkdir -p krakIn
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
-		javac -cp classes:dependancies/dynalink-0.7.jar rt/* -d classes
-		javac -cp classes:"dependancies/*":. dependancies/*.java -d classes
+		javac -cp classes:dependencies/dynalink-0.7.jar rt/* -d classes
+		javac -cp classes:"dependencies/*":. dependencies/*.java -d classes
 
 genStackMaps: 
 	$(foreach file, $(wildcard $(CLASSDIR)/*), java $(RUNFLAGS):. utilities/GenStackMaps $(file);)
