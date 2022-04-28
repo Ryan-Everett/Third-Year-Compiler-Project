@@ -6,6 +6,8 @@ Object subclass: Performer
         i = 0;
         a = "foo";
         b = "bar";
+        self perform: "printThis:" with: "Hello";
+        (self perform: "sumArr:" with: #(1 2 3 4)) println;
         (i < 3) whileTrue: [
             self perform: a;
             a = a ++ b;
@@ -21,5 +23,18 @@ Object subclass: Performer
     )
     foobarbar (
         ", foobarbar" println
+    )
+    printThis: this (
+        this println
+    )
+
+    sumArr: arr |i curr|(
+        i = 0;
+        curr = 0;
+        i < (arr length) whileTrue: [
+            curr = curr + (arr at: i);
+            i = i + 1;
+        ];
+        ^curr;
     )
 )

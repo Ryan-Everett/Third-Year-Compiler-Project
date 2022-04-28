@@ -13,15 +13,16 @@ Object subclass: Main
             ("Con" ++ "cat" ++ "ena" ++ "ted") println;
             ((("abcd" charAt: 2) + 12) == 'o') println;
             (3 >= 2) println;
-            x = examples/LoopTest new;
-            x = examples/BranchTest new;
-            x = examples/ArrayTest new;
+            examples/LoopTest new;
+            examples/BranchTest new;
+            examples/ArrayTest new;
             x = examples/ClassVarTest new;
             y = examples/ClassVarTest new;
             y printShared;
             x incrShared;
             y printShared;
             x = examples/Performer new;
+            examples/Empty new;
             "Test complete!" println;
         )
 )

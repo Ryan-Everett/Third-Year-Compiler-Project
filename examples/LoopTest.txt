@@ -4,9 +4,10 @@ Object subclass: LoopTest
         init (
             self makeLoop;
         )
-        makeLoop |i| (
+        makeLoop |i n k| (
             i = 0;
+            k = 20;
             "Loop Starting" println;
-            i < 10 whileTrue: [i print; ", " print; i = i + 1; ];
+            k > 0 whileTrue: [i ++ ", " print; i = i + k; k = k - 1 ];
         )
 )

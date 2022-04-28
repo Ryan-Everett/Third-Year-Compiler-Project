@@ -99,6 +99,7 @@ stmt :
     | exprB params                        { MessageSendVoid (makeMessageSend $1 $2)}
     | exprB IDENT                         { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
     | exprB PERFORM exprE                 { PerformVoid ($1, $3) }
+    | exprB PERFORM exprE MESSAGE exprE   { PerformWithVoid ($1, $3, $5)}
     | glob_ident NEW                      { InitSendVoid ($1)}
     | RETURN expr                         { Return ($2)}
     | expr WHILETRUE LBAR stmts RBAR      { ExplicitWhileTrue (makeBranch $1 $4)}
@@ -113,6 +114,7 @@ exprA:
       exprB                               { $1 }
     | exprB params                        { MessageSend (makeMessageSend $1 $2)}
     | exprB PERFORM exprE                 { Perform ($1, $3) }
+    | exprB PERFORM exprE MESSAGE exprE   { PerformWith ($1, $3, $5)}
     | exprB IDENT                         { MessageSend (makeMessageSend $1 [makeParam $2 (None)]) }
     | ARRAY NEWWITHARG exprB              { Array $3}
 
@@ -148,13 +150,15 @@ exprE :
 
 variable :
     | name                                { Variable ($1) }
-    | HASH LPAR exprE_list RPAR           { ExplicitArray ($3) }
+    | array                               { $1 }
     | NUMBER                              { Number ($1) }
     | CHAR                                { Char ($1) }
     | STRING                              { String ($1) }
     | TRUE                                { Boolean(1) }
     | FALSE                               { Boolean(0) };
 
+array :
+      HASH LPAR exprE_list RPAR           { ExplicitArray ($3) }
 exprE_list :
       exprE                               { [$1] }
     | exprE exprE_list                    { $1 :: $2 };

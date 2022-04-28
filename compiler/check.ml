@@ -87,6 +87,8 @@ let rec check_expr e env =
         check_expr s.s_target env; check_params s.s_params env
     | Perform (e1, e2) ->
       check_expr e1 env; check_expr e2 env;
+    | PerformWith (e1, e2, e3) ->
+      check_expr e1 env; check_expr e2 env; check_expr e3 env;
     | InitSend s ->
         ()
 
@@ -114,6 +116,8 @@ let rec check_stmt s env =
         check_expr s.s_target env; check_params s.s_params env
     | PerformVoid (e1, e2) ->
         check_expr e1 env; check_expr e2 env;
+    | PerformWithVoid (e1, e2, e3) ->
+      check_expr e1 env; check_expr e2 env; check_expr e3 env;
     | InitSendVoid c ->
         () (*Maybe check if className is on classpath*)
     | ExplicitWhileTrue l -> 

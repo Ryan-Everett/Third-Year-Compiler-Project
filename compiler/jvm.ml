@@ -109,7 +109,7 @@ let rec fInst =
       (*| DYNINITINT ->                 fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:new' (Ljava/lang/Object;I)Lrt/Object;" [dynmeth]*)
         | PGET ->                       fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:getMethod' (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"
         | PCALL (n, x) ->               fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:$' (Ljava/lang/Object;$)Lrt/Object;" [ fStr n; fStr(repeatStr x "Lrt/Object;")]
-        | CALL x ->                     fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;$)Lrt/Object;" [fStr(repeatStr x "Ljava/lang/Object;")]
+        | CALL x ->                     fMeta "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:call' (Ljava/lang/Object;$)Lrt/Object;" [fStr(repeatStr x "Lrt/Object;")]
         | GETSTRINGCALL ->              fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:$getStringForPerform$' (Ljava/lang/Object;)Ljava/lang/String;"
         | GETFIELD (c, n) ->            fMeta "getfield Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]
         | GETSTATIC (c, n) ->           fMeta "getstatic Field \"$\" \"$\" Lrt/Object;" [fStr c; fStr n]

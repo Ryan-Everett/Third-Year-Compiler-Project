@@ -69,6 +69,7 @@ and stmt =
   | ExplicitIfTrueElse of ifElse
   | MessageSendVoid of messageSend
   | PerformVoid of expr * expr
+  | PerformWithVoid of expr * expr * expr
   | InitSendVoid of ident
   | Return of expr
 
@@ -83,6 +84,7 @@ and expr =
   | Variable of name          (* Variable (name) *)
   | MessageSend of messageSend
   | Perform of expr * expr
+  | PerformWith of expr * expr * expr
   | InitSend of ident
 
 and op = Plus | Minus | Times | Divide

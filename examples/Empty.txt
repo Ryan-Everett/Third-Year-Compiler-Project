@@ -2,6 +2,5 @@
 Object subclass: Empty 
     category: examples(
         init (
-
         )
 )

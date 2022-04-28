@@ -12,6 +12,8 @@ let rec gen_expr c e =
         SEQ [NEW("rt/"^s); DUP; INIT("rt/"^s)]
     | Perform (e1, e2) ->
         SEQ[gen_expr c e1; gen_expr c e2; PCALL ("makeString", 0); GETSTRINGCALL; PGET;gen_expr c e1; CALL 1;]
+    | PerformWith (e1, e2, e3) ->
+        SEQ[gen_expr c e1; gen_expr c e2; PCALL ("makeString", 0); GETSTRINGCALL; PGET; gen_expr c e1; gen_expr c e3; CALL 2;]
     | Variable x -> 
       (match x.x_def with 
         Some d -> 
@@ -75,6 +77,8 @@ and gen_stmt c s =
         SEQ [NEW("rt/"^s); INIT("rt/"^s)]
     | PerformVoid (e1, e2) ->
         SEQ[gen_expr c e1; gen_expr c e2; PCALL ("makeString", 0); GETSTRINGCALL; PGET;gen_expr c e1; CALL 1; POP]
+    | PerformWithVoid (e1, e2, e3) ->
+        SEQ[gen_expr c e1; gen_expr c e2; PCALL ("makeString", 0); GETSTRINGCALL; PGET; gen_expr c e1; gen_expr c e3; CALL 2; POP]
     | ExplicitWhileTrue s ->
       (match s.l_lab_set with
         Some l ->
