@@ -8,6 +8,7 @@ public class String extends rt.Object {
     }
 
     //Uncallable in my language due to prepended $, used only for perform
+    @Override
     public java.lang.String $getStringForPerform$() {
         return value.replace(":", "$");
     }

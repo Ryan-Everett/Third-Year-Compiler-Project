@@ -1,4 +1,4 @@
-`Class showcasing how arrays work `
+`Class showcasing how arrays work`
 Object subclass: ArrayTest category: examples vars: arr revArr (
         init
         | i |

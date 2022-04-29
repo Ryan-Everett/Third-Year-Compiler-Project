@@ -89,6 +89,12 @@ let rec check_expr e env =
       check_expr e1 env; check_expr e2 env;
     | PerformWith (e1, e2, e3) ->
       check_expr e1 env; check_expr e2 env; check_expr e3 env;
+    (* | PerformWithArgsVoid (e1, e2, e3, len) ->
+      check_expr e1 env; check_expr e2 env; check_expr e3 env;
+      match e3 with
+        |ExplicitArray es ->
+          len = List.length es
+        | _ -> sem_error "Perform with args must have explicit array" *)
     | InitSend s ->
         ()
 

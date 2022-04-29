@@ -21,6 +21,11 @@ public class Object {
         return new rt.String(this.toString());
     }
 
+    //Uncallable in my language due to prepended $, used only for perform
+    public java.lang.String $getStringForPerform$() {
+        return (this.makeString()).$getStringForPerform$();
+    }
+
     public rt.String concat$(rt.Object o) {
         return this.makeString().concat$(o.makeString());
     }

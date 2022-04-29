@@ -12,7 +12,7 @@ let make_hash n ps =
 let kwtable = 
     make_hash 64
         [ ("subclass$", SUBCLASS); ("category$", CATEGORY);
-          ("vars$", VARNAMES) ; ("true", TRUE); ("perform$", PERFORM) ;
+           ("vars$", VARNAMES) ; ("true", TRUE); ("perform$", PERFORM) ; (* ("withArguments$", WITHARGUMENTS) ; *)
           ("false", FALSE) ; ("init", INIT) ; ("new", NEW) ; ("new$", NEWWITHARG) ;
           ("whileTrue$", WHILETRUE) ; ("ifTrue$", IFTRUE) ; ("else$", ELSE) ; ("Array", ARRAY)]
 
@@ -117,12 +117,13 @@ rule token =
     | "^"               { RETURN }
     | "|"               { BAR }
     | [' ''\t']+        { token lexbuf }
-    | "`"              { comment lexbuf; token lexbuf }
-    | "\n"              { incr currLine; token lexbuf}
+    | "`"               { comment lexbuf; token lexbuf }
+    | "\n"              { incr currLine; token lexbuf }
     | _                 { BADTOK}
     | eof               { EOF }
     
 and comment = 
   parse 
-      "`"              { () }
+      "`"               { () }
+    | "\n"              { incr currLine; token lexbuf; comment lexbuf }
     | _                 {comment lexbuf}

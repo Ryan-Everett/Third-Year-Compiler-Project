@@ -20,7 +20,7 @@ let main () =
   let translateFile in_file = 
     let in_chan = open_in in_file in
       Source.init in_file in_chan;
-      !Lexer.currLine = 1;
+      Lexer.currLine := 1;
       let lexbuf = Lexing.from_channel in_chan in
         let prog = try Parser.file Lexer.token lexbuf with
           Parsing.Parse_error -> 
@@ -28,7 +28,11 @@ let main () =
             Source.err_message "syntax error at token '$'" [fStr tok] !Lexer.currLine;
             exit 1 in
       if !dflag > 0 then Tree.print_tree stdout prog;
-      Check.annotate prog;
+      begin try Check.annotate prog with
+        Check.Semantic_error (fmt, args, line) ->
+          Source.err_message fmt args line;
+          exit 1;
+      end;
       Jvmgen.translate prog in
   List.map translateFile !fns
 
