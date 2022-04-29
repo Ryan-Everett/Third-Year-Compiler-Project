@@ -8,26 +8,24 @@ ctest:
 		$(MAKE) -C compiler/lib clean
 		$(MAKE) -C compiler clean
 		rm -rf classes
-		rm -rf midwayClasses
 		rm utilities/*.class
 downloadKrak:
 		git clone https://github.com/Storyyeller/Krakatau utilities/Krakatau
+		mkdir krakIn
 
 build:
 		
 		$(MAKE) -C compiler/lib all
 		$(MAKE) -C compiler all
-		javac -cp classes:"dependencies/*":. utilities/GenStackMaps.java
-		javac -cp classes:dependencies/dynalink-0.7.jar rt/*.java -d classes
-		javac -cp classes:"dependencies/*":. dependencies/*.java -d classes
+		javac -cp "utilities/asm-9.2.jar":. utilities/GenStackMaps.java
 
 compile:
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python utilities/Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
-		java $(RUNFLAGS):. utilities/GenStackMaps classes/rt/examples
+		java -cp "dependencies/rt.jar":"utilities/asm-9.2.jar":. utilities/GenStackMaps classes/rt/examples
 
 buildtester:
-		javac -cp classes rt/examples/*.java -d classes
+		javac -cp classes:"dependencies/*":. testClasses/*.java -d classes
 runMain:
 	java $(RUNFLAGS):. rt.examples.ExampleTester
 
@@ -39,4 +37,5 @@ clean:
 		rm -rf classes
 		rm -rf midwayClasses
 		rm -rf utilities/Krakatau
+		rm krakIn
 		rm utilities/*.class

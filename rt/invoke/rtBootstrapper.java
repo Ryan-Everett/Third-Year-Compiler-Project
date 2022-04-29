@@ -1,4 +1,4 @@
-package dependencies;
+package rt.invoke;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;

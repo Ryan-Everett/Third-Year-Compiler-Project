@@ -71,7 +71,7 @@ let repeatStr n s =
 
 
 let rec fInst =
-  let defbootclass = fStr "dependencies/rtBootstrapper" in
+  let defbootclass = fStr "rt/invoke/rtBootstrapper" in
   let statclass = fStr "org/dynalang/dynalink/beans/StaticClass" in
     let dynmeth = fMeta "Method $ publicBootstrap (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;" [defbootclass; fStr"$"] in
     let getstatclass =  fMeta "Method $ forClass (Ljava/lang/Class;)Lorg/dynalang/dynalink/beans/StaticClass;" [statclass] in

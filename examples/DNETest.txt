@@ -1,4 +1,4 @@
-`Showing how doesNotUnderstand can be simply overwritten `
+`Showing how doesNotUnderstand can be simply overridden `
 Object subclass: DNETest 
     category: examples (
         init (
