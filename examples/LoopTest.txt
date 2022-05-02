@@ -1,13 +1,18 @@
 `Class showing a while loop`
 Object subclass: LoopTest
-    category: examples(
+    category: examples
+    vars: i(
         init (
-            self makeLoop;
+            i = "INSTANCE";
+            self makeLoop: "LOCAL";
+            i println;
         )
-        makeLoop |i n k| (
+        makeLoop: i  |n k| (
+            i println;
             i = 0;
             k = 20;
             "Loop Starting" println;
-            k > 0 whileTrue: [i ++ ", " print; i = i + k; k = k - 1 ];
+            k > 0 whileTrue: [i = i + k; k = k - 1; i ++ ", " print;];
+            "" println;
         )
 )

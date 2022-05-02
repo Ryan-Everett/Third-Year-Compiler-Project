@@ -7,7 +7,7 @@ Object subclass: IntTests
             self localTest: "Param";
             v = v * 3 - -7 * 2;
             v println;
-            (self add1: 2) println
+            self associativityTest
         )
 
         localTest: param
@@ -20,8 +20,7 @@ Object subclass: IntTests
             v println
         )
 
-        add1: x (
-            x = x + 1;
-            ^x
+        associativityTest (
+            v = 1 / 1 * 0 `Would throw error if language was right associative`
         )
 )

@@ -9,7 +9,7 @@ and classDecl =
   { c_super : ident;
     c_name : ident;
     c_category : ident;
-    c_instance_vars : ident list;
+    c_vars : ident list;
     c_messages : message list}
 
 and ident = string
@@ -61,9 +61,6 @@ and stmt =
   | Seq of stmt list
   | Assign of expr * expr
 (*| BlockAssign of expr * block *)
-  | Print of expr
-  | Newline
-  | IfStmt of expr * stmt * stmt
   | ExplicitWhileTrue of branch
   | ExplicitIfTrue of branch
   | ExplicitIfTrueElse of ifElse
@@ -88,9 +85,6 @@ and expr =
     | PerformWith of expr * expr * expr
     (* | PerformWithArgs of expr * expr * expr * (int option) *)
     | InitSend of ident
-
-
-and op = Plus | Minus | Times | Divide
 
 (* seq -- neatly join a list of statements into a sequence *)
 val seq : stmt list -> stmt

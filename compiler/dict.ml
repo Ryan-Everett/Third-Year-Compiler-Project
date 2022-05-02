@@ -12,26 +12,25 @@ let label () = incr lab; !lab
 type def = 
   { d_tag : ident;              (* Name *)
     d_kind : def_kind;          (* Definition *)
-    d_level : int;              (* Nesting level *)
-    d_lab : string;             (* Label if global *)
     d_off : int }               (* Offset if local *)
 
 and def_kind =
-    InstanceVarDef              (* Instance Variable *)
-  | ClassVarDef                 (* Class Variable*)
-  | LocalDef
+    InstanceVarDef              (* Instance variable *)
+  | ClassVarDef                 (* Class variable *)
+  | LocalDef                    (* Local variable/param *)
+  | MessageDef                  (* Message declaration *)
 
 type lab_set =
   { l_lab1 : int;
     l_lab2 : int;
     l_lab3 : int }
 
-let find_def x ds =
+let find_def x k ds =
   let rec search =
     function
         [] -> raise Not_found
       | d::ds -> 
-          if x = d.d_tag then d else search ds in
+          if (x = d.d_tag && k = d.d_kind) then d else search ds in
   search ds
 
 module IdMap = Map.Make(struct type t = ident  let compare = compare end)
@@ -42,7 +41,7 @@ let can f x = try f x; true with Not_found -> false
 
 (* |define| -- add a definition *)
 let define d (Env (b, m)) = 
-  if can (find_def d.d_tag) b then raise Exit;
+  if can (find_def d.d_tag d.d_kind) b then raise Exit;
   Env (d::b, IdMap.add d.d_tag d m)
 
 (* |lookup| -- find definition of an identifier *)

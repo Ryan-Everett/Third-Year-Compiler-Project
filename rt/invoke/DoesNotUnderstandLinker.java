@@ -1,4 +1,4 @@
-package rt;
+package rt.invoke;
 import org.dynalang.dynalink.*;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.MethodHandle;
@@ -12,6 +12,9 @@ import org.dynalang.dynalink.linker.GuardedInvocation;
 import org.dynalang.dynalink.linker.GuardingDynamicLinker;
 import org.dynalang.dynalink.linker.LinkRequest;
 import org.dynalang.dynalink.linker.LinkerServices;
+
+import rt.Object;
+import rt.String;
 
 public class DoesNotUnderstandLinker implements GuardingDynamicLinker{
     private final MethodType dneType;

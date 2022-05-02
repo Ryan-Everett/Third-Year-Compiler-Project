@@ -112,7 +112,7 @@ let gen_var_decl vName =
 let gen_class c =
   let fullClassName = "rt/" ^c.c_category ^ "/" ^ c.c_name in
     SEQ [ VERSION (55, 0); CLASS fullClassName; SUPER c.c_super; DECLARECONSTS;
-          SEQ (List.map gen_var_decl c.c_instance_vars);
+          SEQ (List.map gen_var_decl c.c_vars);
           SEQ (List.map (gen_message_decl c) c.c_messages); ENDCLASS]
 let translate (ClassDecls(classes)) = 
   let translatedClasses = SEQ (List.map gen_class classes) in

@@ -95,7 +95,7 @@ stmt_list :
 
 stmt :
       /* empty */                         { Skip }
-    | variable EQUAL expr                 { Assign ($1, $3)}
+    | name EQUAL expr                     { Assign (Variable($1), $3)}
     | exprB params                        { MessageSendVoid (makeMessageSend $1 $2)}
     | exprB IDENT                         { MessageSendVoid (makeMessageSend $1 [makeParam $2 (None)]) }
     | exprB PERFORM exprE                 { PerformVoid ($1, $3) }

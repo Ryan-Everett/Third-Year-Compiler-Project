@@ -8,14 +8,13 @@ val label : unit -> codelab
 type def = 
   { d_tag : ident;              (* Name *)
     d_kind : def_kind;          (* Definition *)
-    d_level : int;              (* Nesting level *)
-    d_lab : string;             (* Label if global *)
     d_off : int }               (* Offset if local *)
 
 and def_kind =
     InstanceVarDef              (* Instance Variable *)
   | ClassVarDef                 (* Class Variable*)
-  | LocalDef
+  | LocalDef                    (* Local variable/param*)
+  | MessageDef                  (* Message declaration*)
 
 type environment
 

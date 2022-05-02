@@ -35,7 +35,6 @@ clean:
 		$(MAKE) -C compiler/lib clean
 		$(MAKE) -C compiler clean
 		rm -rf classes
-		rm -rf midwayClasses
 		rm -rf utilities/Krakatau
-		rm krakIn
+		rm -rf krakIn
 		rm utilities/*.class

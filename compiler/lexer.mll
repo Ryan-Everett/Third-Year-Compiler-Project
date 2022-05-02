@@ -16,50 +16,33 @@ let kwtable =
           ("false", FALSE) ; ("init", INIT) ; ("new", NEW) ; ("new$", NEWWITHARG) ;
           ("whileTrue$", WHILETRUE) ; ("ifTrue$", IFTRUE) ; ("else$", ELSE) ; ("Array", ARRAY)]
 
-(* |idtable| -- table of all identifiers seen so far *)
-let idtable = Hashtbl.create 64
 
 (* |simple_up_lookup| -- convert capital-starting string to keyword or identifier *)
 let simple_up_lookup s = 
   try Hashtbl.find kwtable s with 
-    Not_found -> 
-      Hashtbl.replace idtable s ();
-      GLOBIDENT s
+    Not_found -> GLOBIDENT s
 
 (* |up_lookup| -- convert capital-starting string with a path to keyword or identifier *)
 let up_lookup s = 
   try Hashtbl.find kwtable s with 
-    Not_found -> 
-      Hashtbl.replace idtable s ();
-      PATHEDGLOBIDENT s
+    Not_found -> PATHEDGLOBIDENT s
 
 (* |up_lookup| -- convert non-capital-starting string to keyword or identifier *)
 let low_lookup s = 
   try Hashtbl.find kwtable s with 
-    Not_found -> 
-      Hashtbl.replace idtable s ();
-      IDENT s
+    Not_found -> IDENT s
 
 
 (* |message_lookup| -- convert string to message *)
 let message_lookup s =
   let m = s ^ "$" in
     try Hashtbl.find kwtable m with 
-      Not_found -> 
-        Hashtbl.replace idtable m ();
-        MESSAGE m
+      Not_found -> MESSAGE m
 
 (* |block_var_lookup| -- convert string to message *)
 let block_var_lookup s =
     try Hashtbl.find kwtable s with 
-      Not_found -> 
-        Hashtbl.replace idtable s ();
-        BVAR s
-
-(* |get_vars| -- get list of identifiers in the program *)
-let get_vars () = 
-  Hashtbl.fold (fun k () ks -> k::ks) idtable []
-
+      Not_found -> BVAR s
 
 let currLine = ref 1
 

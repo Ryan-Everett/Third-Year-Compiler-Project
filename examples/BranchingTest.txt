@@ -9,7 +9,7 @@ Object subclass: BranchTest
             "Loop Starting" println;
             i < n whileTrue: [
                 (i % 2) == 0 ifTrue: [
-                    i ++ ", " print;
+                    i ++ ", " print
                 ]
                 else: ["ODD, " print];
                 i = i + 1; 

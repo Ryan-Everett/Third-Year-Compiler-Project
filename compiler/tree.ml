@@ -9,7 +9,7 @@ and classDecl =
   { c_super : ident;
     c_name : ident;
     c_category : ident;
-    c_instance_vars : ident list;
+    c_vars : ident list;
     c_messages : message list}
 
 and ident = string
@@ -61,9 +61,6 @@ and stmt =
     Skip 
   | Seq of stmt list
   | Assign of expr * expr
-  | Print of expr
-  | Newline
-  | IfStmt of expr * stmt * stmt  (*Not added yet*)
   | ExplicitWhileTrue of branch
   | ExplicitIfTrue of branch
   | ExplicitIfTrueElse of ifElse
@@ -88,8 +85,6 @@ and expr =
   | PerformWith of expr * expr * expr
   (* | PerformWithArgs of expr * expr * expr * (int option) *)
   | InitSend of ident
-
-and op = Plus | Minus | Times | Divide
 
 let seq =
   function
@@ -125,7 +120,7 @@ let numArgs ps = List.fold_right (fun x n -> match x.p_expr with
     | None -> n) ps 0
 
 let makeClass sup name cat vars messages =
-  {c_super = "rt/"^sup; c_name = name; c_category = cat; c_instance_vars = vars; c_messages = messages}
+  {c_super = "rt/"^sup; c_name = name; c_category = cat; c_vars = vars; c_messages = messages}
 
 let makeMessage ps ls ss = 
   let arg_count = declNumArgs ps in
@@ -166,8 +161,16 @@ let rec fExpr =
         fMeta "String_\"$\"" [fStr n]
     | Variable x -> 
         fMeta "Variable_\"$\"" [fName x]
+    | Array e ->
+        fMeta "Array_$" [fExpr e]
+    | ExplicitArray es ->
+        fMeta "ExplicitArray_($)" [fList(fExpr) es]
     | MessageSend s ->
         fMeta "MessageSend_($, $)" [fExpr s.s_target; fList(fParam) s.s_params]
+    | Perform (e1, e2) ->
+        fMeta "Perform_($, $)" [fExpr e1; fExpr e2]
+    | PerformWith (e1, e2, e3) ->
+      fMeta "Perform_($, $)" [fExpr e1; fExpr e2; fExpr e3]
     | InitSend c ->
         fMeta "InitSend_($)" [fStr c]
 
@@ -184,16 +187,18 @@ let rec fStmt =
         fMeta "Seq_$" [fList(fStmt) ss]
     | Assign (x, e) -> 
         fMeta "Assign_(\"$\", $)" [fExpr x; fExpr e]
-    | Print e -> 
-        fMeta "Print_($)" [fExpr e]
-    | Newline -> 
-        fStr "Newline"
-    | IfStmt (e, s1, s2) ->
-        fMeta "IfStmt_($, $, $)" [fExpr e; fStmt s1; fStmt s2]
+    | ExplicitIfTrue (l) ->
+        fMeta "If($, $, $)" [fExpr l.l_cond; fStmt l.l_body]
+    | ExplicitIfTrueElse (ie) ->
+        fMeta "IfElse($, $, $)" [fExpr ie.ie_cond; fStmt ie.ie_ifStmt; fStmt ie.ie_elseStmt]
     | ExplicitWhileTrue branch -> 
         fMeta "While_($, $)" [fExpr branch.l_cond; fStmt branch.l_body]
     | MessageSendVoid s ->
         fMeta "MessageSendVoid_($, $)" [fExpr s.s_target; fList(fParam) s.s_params]
+    | PerformVoid (e1, e2) ->
+        fMeta "PerformVoid_($, $)" [fExpr e1; fExpr e2]
+    | PerformWithVoid (e1, e2, e3) ->
+        fMeta "PerformVoid_($, $)" [fExpr e1; fExpr e2; fExpr e3]
     | InitSendVoid c ->
         fMeta "InitSendVoid_($)" [fStr c]
     | Return e ->
@@ -202,6 +207,6 @@ let rec fStmt =
 let fMessageDecl (m) = fMeta "MessageDecl_($,$)" [fList(fParamDecl) m.m_params; fStmt m.m_body]
 
 let fClassDecl (c) = 
-  fMeta "ClassDecl_($, $, $, $, $)" [fStr c.c_super; fStr c.c_name; fStr c.c_category; fList(fStr) c.c_instance_vars; fList(fMessageDecl) c.c_messages]
+  fMeta "ClassDecl_($, $, $, $, $)" [fStr c.c_super; fStr c.c_name; fStr c.c_category; fList(fStr) c.c_vars; fList(fMessageDecl) c.c_messages]
 let print_tree fp (ClassDecls(cds)) = fgrindf fp "! " "$" [fList(fClassDecl) cds]
 
