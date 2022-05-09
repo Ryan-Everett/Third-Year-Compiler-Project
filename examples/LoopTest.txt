@@ -15,6 +15,10 @@ Object subclass: LoopTest
             "Loop Starting" println;
             k > 0 whileTrue: [i = i + k; k = k - 1; i ++ ", " print;];
             "" println;
+            k = 0;
+            "Long loop starting" println;
+            k < 1000000 whileTrue: [k = k +1];
+            "Long loop done, k = " ++ k println
         )
 )
 

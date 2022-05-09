@@ -29,6 +29,7 @@ type code =
   | AASTORE                                 (*Store into reference array*)
   | AALOAD                                  (*Load reference from array *)
   | LDC of string                           (*Load constant string onto stack *)
+  | LDCINT of int                           (*Load constant int onto stack *)
   | LDCLASS of string                       (*Load class onto stack (className) *)
   | GETMETA                                 (*Get meta class of class on stack *)
   | DYNINIT                                 (*Create object with invoke dynamic *)
@@ -103,6 +104,7 @@ let rec fInst =
         | AASTORE ->                    fStr "aastore"
         | AALOAD ->                     fStr "aaload"
         | LDC n ->                      fMeta "ldc \"$\"" [fStr n]
+        | LDCINT x ->                   fMeta "ldc Int $" [fNum x]
         | LDCLASS c ->                  fMeta "ldc Class \"$\"" [fStr c]
         | GETMETA ->                    fStr "invokestatic [getstatcls]"
         | DYNINIT ->                    fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:new' (Ljava/lang/Object;)Lrt/Object;" 

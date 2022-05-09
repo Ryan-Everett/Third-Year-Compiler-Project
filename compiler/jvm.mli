@@ -27,6 +27,7 @@ type code =
   | AASTORE                                 (*Store into reference array*)
   | AALOAD                                  (*Load reference from array *)
   | LDC of string                           (*Load constant string onto stack *)
+  | LDCINT of int                           (*Load constant int onto stack *)
   | LDCLASS of string                       (*Load class onto stack (className) *)
   | GETMETA                                 (*Get meta class of class on stack*)
   | DYNINIT                                 (*Create object with invoke dynamic *)

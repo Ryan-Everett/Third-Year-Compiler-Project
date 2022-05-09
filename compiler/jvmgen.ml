@@ -36,9 +36,10 @@ let rec gen_expr c l e =
     | _ -> SEQ[]
 
 and gen_num x = 
-  if x < 6 then SEQ[ICONST x]
-  else if x < 128 then SEQ[BIPUSH x]
-  else SEQ[SIPUSH x]
+  if x < 6 then ICONST x
+  else if x < 128 then BIPUSH x
+  else if x < 32768 then SIPUSH x
+  else LDCINT x
 
 and gen_array_innards c l es =
   let curr_index = ref 0
