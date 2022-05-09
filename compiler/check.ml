@@ -16,6 +16,9 @@ let err_line = ref 1
 
 let curr_lab = ref 1
 
+let get_lab () = 
+  let l1 = !curr_lab in incr curr_lab; l1;
+
 (* |Semantic_error| -- exception raised if error detected *)
   exception Semantic_error of string * Print.arg list * int
 
@@ -123,21 +126,18 @@ let rec check_stmt s env =
     | InitSendVoid c ->
         () (*Maybe check if className is on classpath*)
     | ExplicitWhileTrue l -> 
-        let l1 = !curr_lab in incr curr_lab;
+        let l1 = get_lab ()in
           check_expr l.l_cond env; check_stmt l.l_body env; 
-          let l2 = !curr_lab in incr curr_lab; 
-          let l3 = !curr_lab in incr curr_lab;
-          l.l_lab_set <- Some {l_lab1 = l1; l_lab2 = l2; l_lab3 = l3 }; ()
+          l.l_lab_set <- Some {l_lab1 = l1; l_lab2 = get_lab (); l_lab3 = get_lab () }; ()
     | ExplicitIfTrue l ->
         check_expr l.l_cond env; check_stmt l.l_body env;
-        let l1 = !curr_lab in incr curr_lab;
-        l.l_lab_set <- Some{l_lab1 = l1; l_lab2 = l1; l_lab3 = l1;}
+        let l1 = get_lab () in
+          l.l_lab_set <- Some{l_lab1 = l1; l_lab2 = l1; l_lab3 = -1;}
     | ExplicitIfTrueElse ie ->
       check_expr ie.ie_cond env; check_stmt ie.ie_ifStmt env;
-      let l1 = !curr_lab in incr curr_lab;
-      check_stmt ie.ie_elseStmt env;
-      let l2 = !curr_lab in incr curr_lab;
-      ie.ie_lab_set <- Some{l_lab1 = l1; l_lab2 = l2; l_lab3 = l1;}
+      let l1 = get_lab() in
+        check_stmt ie.ie_elseStmt env;
+        ie.ie_lab_set <- Some{l_lab1 = l1; l_lab2 = get_lab(); l_lab3 = -1;}; ()
     | Return e ->
         check_expr e env
 
@@ -173,6 +173,7 @@ let check_var_decls vds env0 =
 
 let init_env = declare_local "self" 0 empty
 let annotate_class c =
+  curr_lab := 1;
   let env = check_var_decls c.c_vars init_env in
     check_message_decls c.c_messages env
 

@@ -5,6 +5,26 @@ Object subclass: LoopTest
         init (
             i = "INSTANCE";
             self makeLoop: "LOCAL";
+            examples/LoopTest2 new;
+            i println;
+        )
+        makeLoop: i  |n k| (
+            i println;
+            i = 0;
+            k = 20;
+            "Loop Starting" println;
+            k > 0 whileTrue: [i = i + k; k = k - 1; i ++ ", " print;];
+            "" println;
+        )
+)
+
+`Class showing a while loop`
+Object subclass: LoopTest2
+    category: examples
+    vars: i(
+        init (
+            i = "INSTANCE";
+            self makeLoop: "LOCAL";
             i println;
         )
         makeLoop: i  |n k| (
