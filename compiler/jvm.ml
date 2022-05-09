@@ -91,11 +91,11 @@ let rec fInst =
         | NEW n->                       fMeta "new $" [fStr n]
         | DUP ->                        fStr "dup"
         | INIT n ->                     fMeta "invokespecial Method $ <init> ()V" [fStr n]
-        | INITINT ->                    fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:callMethod:createInt' (Ljava/lang/Object;I)Lrt/Integer;"
+        | INITINT ->                    fStr "invokestatic Method rt/Integer createInt (I)Lrt/Integer;"
         | INITBOOL ->                   fStr "invokespecial Method rt/Boolean <init> (Z)V"
         | INITCHAR ->                   fStr "invokespecial Method rt/Char <init> (C)V"
         | INITSTRING ->                 fStr "invokespecial Method rt/String <init> (Ljava/lang/String;)V"
-        | INITARRAY ->                  fStr "invokespecial Method rt/Array <init> (Lrt/Integer;)V"
+        | INITARRAY ->                  fStr "invokedynamic InvokeDynamic invokeStatic [dynmeth] : 'dyn:new' (Ljava/lang/Object;Lrt/Object;)Lrt/Object;" 
         | INITARRAYEXPLICIT ->          fStr "invokespecial Method rt/Array <init> ([Lrt/Object;)V"
         | SLIMIT x ->                   fMeta ".limit stack $" [fNum x]
         | LLIMIT x ->                   fMeta ".limit locals $" [fNum x]

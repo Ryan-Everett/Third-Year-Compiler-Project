@@ -23,14 +23,14 @@ let rec gen_expr c l e =
             | LocalDef -> SEQ [ALOAD d.d_off]
           )
       )
-    | Number x -> SEQ[LDCLASS "rt/Integer"; GETMETA; gen_num x; INITINT]
+    | Number x -> SEQ[gen_num x; INITINT]
     | Boolean b -> SEQ[ NEW "rt/Boolean"; DUP; ICONST b; INITBOOL]
     | Char x ->
         SEQ [NEW "rt/Char"; DUP; BIPUSH (Char.code x); INITCHAR]
     | String x ->
         SEQ [NEW "rt/String"; DUP; LDC x; INITSTRING]
     | Array e ->
-        SEQ [NEW "rt/Array"; DUP; gen_expr c l e; INITARRAY ]
+        SEQ [LDCLASS "rt/Array"; GETMETA; gen_expr c l e; INITARRAY ]
     | ExplicitArray es ->
         SEQ [NEW "rt/Array"; DUP;ICONST (List.length es); ANEWARRAY; gen_array_innards c l es; INITARRAYEXPLICIT]
     | _ -> SEQ[]

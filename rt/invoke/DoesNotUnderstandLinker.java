@@ -12,6 +12,7 @@ import org.dynalang.dynalink.linker.GuardedInvocation;
 import org.dynalang.dynalink.linker.GuardingDynamicLinker;
 import org.dynalang.dynalink.linker.LinkRequest;
 import org.dynalang.dynalink.linker.LinkerServices;
+import org.dynalang.dynalink.support.Guards;
 
 import rt.Object;
 import rt.String;
@@ -54,14 +55,12 @@ public class DoesNotUnderstandLinker implements GuardingDynamicLinker{
             return null;
         }
         final java.lang.Object receiver = request.getReceiver();
-        System.out.println(receiver.toString());
         //We cannot operate with no receiver
         if(receiver == null) {
             return null;
         }
 
         final java.lang.String callName = callSiteDescriptor.getNameToken(CallSiteDescriptor.NAME_OPERAND);
-        System.out.println(callSiteDescriptor.getMethodType().parameterCount() );
         final java.lang.Class[] clazzs = new java.lang.Class [callSiteDescriptor.getMethodType().parameterCount() - 1];
         final java.lang.Class clazz = (new java.lang.Object()).getClass(); //Used in the dropArgs
         Arrays.fill(clazzs, clazz);
@@ -72,6 +71,6 @@ public class DoesNotUnderstandLinker implements GuardingDynamicLinker{
                 MethodHandles.insertArguments(dneHandle,1,new rt.String(callName.replace("$", ":")))  //Add in the callName as a string argument
                 ,1, clazzs) //Drop args starting at pos 1
             , request.getCallSiteDescriptor().getMethodType())
-            , null));    //This invocation is unconditional, so we pass null as guard
+            , Guards.isOfClass(receiver.getClass(), request.getCallSiteDescriptor().getMethodType())));    //This invocation is unconditional, so we pass null as guard
     }
 }

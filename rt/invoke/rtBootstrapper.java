@@ -30,6 +30,6 @@ public class rtBootstrapper {
     //The bootstrap method for all invokedynamic instructions in my language
     public static CallSite publicBootstrap(MethodHandles.Lookup caller, String name, MethodType type) {
         //System.out.println("Sig: " + caller.toString() + ", " + name + ", " + type.toString());
-        return dynamicLinker.link(new MonomorphicCallSite(CallSiteDescriptorFactory.create(MethodHandles.publicLookup(), name, type)));
+        return dynamicLinker.link(new ChainedCallSite(CallSiteDescriptorFactory.create(MethodHandles.publicLookup(), name, type)));
     }
 }

@@ -1,0 +1,72 @@
+`Class used for benchmarking`
+Object subclass: SpeedTest
+    category: speedtest (
+        init |k n| (
+            k = 0;
+            n = 10000019;
+            `k < n whileTrue: [self busyLoop: k; k = k + 1];`
+            "Factor of " ++ n ++ " is " ++ (self slowFactorise: n) println;
+            (self objectCount: 10000) println;
+
+        )
+
+        busyLoop: n |k| (
+            k = 0;
+            k < n whileTrue: [k = k + 1;];
+            ^n;
+        )
+
+        slowFactorise: n |k| (
+            k = 2;
+            ((n % k) != 0) whileTrue: [ k = k + 1];
+            ^k;
+        )
+
+        objectCount: len |arr n k|(
+            arr = Array new: len;
+            n = 0;
+            (n < len) whileTrue: [
+                ((n %2) == 0) ifTrue: [
+                    arr at: n put: (speedtest/ObjYesFoo new);
+                ]
+                else: [
+                    arr at: n put: (speedtest/ObjNoFoo new);
+                ];
+                n = n + 1;
+            ];
+            k = 0; n = 0;
+            n < len whileTrue: [
+                k = k + ((arr at: n) foo);
+                n = n + 1;
+            ];
+            ^k
+        )
+)
+
+Object subclass: Obj
+    category: speedtest (
+        init (
+        )
+        `When foo is called on an ObjNoFoo it is linked here`
+        doesNotUnderstand: x (
+            ^0; 
+        )
+    )
+
+`Class which has a definition for foo`
+speedtest/Obj subclass: ObjYesFoo
+    category: speedtest (
+        init (
+
+        )
+        foo (
+            ^1;
+        )
+    )
+
+`Class which has no definition for foo`
+speedtest/Obj subclass: ObjNoFoo
+    category: speedtest (
+        init (
+        )
+    )
