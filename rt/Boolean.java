@@ -1,9 +1,19 @@
 package rt;
 
 public class Boolean extends rt.Object{
-    final boolean value;
+    static final rt.Boolean falseBool = new rt.Boolean(false);
+    static final rt.Boolean trueBool = new rt.Boolean(true);
+    static Boolean createBool(boolean b){
+        if (b){
+            return trueBool;
+        }
+        else{
+            return falseBool;
+        }
+    }
+    boolean value;
     public Boolean(boolean b) {
-        value = b;
+        value = b;  //REMOVE THIS
     }
     @Override
     public void print() {
@@ -19,15 +29,15 @@ public class Boolean extends rt.Object{
     }
 
     public rt.Boolean and$(rt.Boolean b2){
-        return new rt.Boolean(value && b2.value);
+        return createBool(value && b2.value);
     }
 
     public rt.Boolean or$(rt.Boolean b2){
-        return new rt.Boolean(value || b2.value);
+        return createBool(value || b2.value);
     }
 
     public rt.Boolean not() {
-        return new rt.Boolean(!value);
+        return createBool(!value);
     }
     //public void if$then$(rt.Block b){
     //}

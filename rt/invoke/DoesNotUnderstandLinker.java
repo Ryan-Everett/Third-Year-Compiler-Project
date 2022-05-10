@@ -71,6 +71,6 @@ public class DoesNotUnderstandLinker implements GuardingDynamicLinker{
                 MethodHandles.insertArguments(dneHandle,1,new rt.String(callName.replace("$", ":")))  //Add in the callName as a string argument
                 ,1, clazzs) //Drop args starting at pos 1
             , request.getCallSiteDescriptor().getMethodType())
-            , Guards.isOfClass(receiver.getClass(), request.getCallSiteDescriptor().getMethodType())));    //This invocation is unconditional, so we pass null as guard
+            , Guards.isOfClass(receiver.getClass(), request.getCallSiteDescriptor().getMethodType())));    //This invocation is valid provided the receiver's class is EXACTLY equal to this class 
     }
 }

@@ -1,15 +1,29 @@
 `Class used for benchmarking`
 Object subclass: SpeedTest
     category: speedtest (
-        init |k n| (
+        init |k n i| (
             k = 0;
-            n = 10000019;
-            `k < n whileTrue: [self busyLoop: k; k = k + 1];`
-            "Factor of " ++ n ++ " is " ++ (self slowFactorise: n) println;
-            (self objectCount: 10000) println;
+            n = 2147483647;
+            i = 0;
+            `k < 2147483647 whileTrue: [k = k + 1;];`
+            (self loopCeption: 4) println;
+            `k > 0 whileTrue: [(i $ 2 == 0) ifTrue: []; i = i + k; k = k - 1;];`
+            `k < n whileTrue: [i = k *k; k = k + 1]`
+            `"Factor of " ++ n ++ " is " ++ (self slowFactorise: n) println;`
+            `(self objectCount: 10000) println;`
 
         )
-
+        loopCeption: n |k i| (
+            k = 0;
+            i = 1;
+            n > 0 ifTrue: [
+                k < 127 whileTrue: [
+                    i = i + (self loopCeption: (n-1));
+                    k = k + 1;
+                ];
+            ];
+            ^i;
+        )
         busyLoop: n |k| (
             k = 0;
             k < n whileTrue: [k = k + 1;];

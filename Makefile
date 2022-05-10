@@ -22,7 +22,7 @@ build:
 compile:
 		compiler/compile examples/* > krakIn/generatedClasses.j
 		python utilities/Krakatau/assemble.py -out classes -r krakIn > /dev/null 2>&1
-		java -cp "dependencies/rt.jar":"utilities/asm-9.2.jar":. utilities/GenStackMaps classes/rt/examples
+		java -cp "dependencies/rt.jar":"utilities/asm-9.2.jar":. utilities/GenStackMaps classes/rt/
 
 buildtester:
 		javac -cp classes:"dependencies/*":. testClasses/*.java -d classes
@@ -38,3 +38,11 @@ clean:
 		rm -rf utilities/Krakatau
 		rm -rf krakIn
 		rm utilities/*.class
+compare:
+	make btest > /dev/null 2>&1
+	java -cp classes:"dependencies/*":. rt.speedtest.SpeedTester
+
+jar:
+	cd rt/
+	javac -cp "../dependencies/*":. rt/*.java -d rtc
+	javac -cp "dependencies/*":. rt/invoke/*.java -d rtc
